@@ -6,6 +6,6 @@ module.exports = {
   GOOGLE_PROJECT_ID: process.env.GOOGLE_PROJECT_ID,
   DF_LANGUAGE_CODE: "de_DE",
   GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
-  GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
+  GOOGLE_PRIVATE_KEY: JSON.parse(process.env.GOOGLE_PRIVATE_KEY),
   FB_APP_ID: process.env.FB_APP_ID
 };
