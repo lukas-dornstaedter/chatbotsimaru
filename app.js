@@ -227,32 +227,34 @@ function handleDialogFlowAction(
             ? contexts[0].parameters.fields["order-pizza"].stringValue
             : "";
 
-        handleMessages(messages, sender);
-        sendTypingOn(sender);
-        //ask what user wants to do next
-        setTimeout(function() {
-          let buttons = [
-            {
-              type: "postback",
-              title: "stimmt",
-              payload: "TRUE"
-            },
-            {
-              type: "postback",
-              title: "stimmt nicht",
-              payload: "FALSE"
-            }
-          ];
-          sendButtonMessage(
-            sender,
-            "Du möchtest " +
-              order_pizza_count +
-              "x die Pizza " +
-              order_pizza +
-              " bestellen?",
-            buttons
-          );
-        }, 3000);
+        if (order_pizza != null) {
+          handleMessages(messages, sender);
+          sendTypingOn(sender);
+          //ask what user wants to do next
+          setTimeout(function() {
+            let buttons = [
+              {
+                type: "postback",
+                title: "stimmt",
+                payload: "TRUE"
+              },
+              {
+                type: "postback",
+                title: "stimmt nicht",
+                payload: "FALSE"
+              }
+            ];
+            sendButtonMessage(
+              sender,
+              "Du möchtest " +
+                order_pizza_count +
+                "x die Pizza " +
+                order_pizza +
+                " bestellen?",
+              buttons
+            );
+          }, 3000);
+        }
       }
       break;
     default:
