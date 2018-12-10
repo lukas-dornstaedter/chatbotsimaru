@@ -214,7 +214,10 @@ function handleDialogFlowAction(
       if (
         isDefined(contexts[0]) &&
         contexts[0].name.includes("order") &&
-        contexts[0].parameters
+        contexts[0].parameters &&
+        contexts[0].name.includes(
+          "neworder_-_custom_dialog_params_order-pizza"
+        ) == false
       ) {
         let order_pizza_count =
           isDefined(contexts[0].parameters.fields["order-pizza-count"]) &&
