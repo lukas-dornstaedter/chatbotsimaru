@@ -213,11 +213,10 @@ function handleDialogFlowAction(
     case "newOrder-set":
       if (
         isDefined(contexts[0]) &&
-        contexts[0].name.includes("order") &&
-        contexts[0].parameters &&
-        contexts[0].name.includes(
-          "neworder_-_custom_dialog_params_order-pizza"
-        ) == false
+        (contexts[0].name =
+          "projects/pizzaagentetcetera/agent/sessions/4a822cb0-6c30-21f2-1e0b-6abd6c2e952e/contexts/order" ||
+          contexts[0].name.includes("neworder_-_custom_dialog_context")) &&
+        contexts[0].parameters
       ) {
         let order_pizza_count =
           isDefined(contexts[0].parameters.fields["order-pizza-count"]) &&
