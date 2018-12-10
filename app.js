@@ -214,9 +214,7 @@ function handleDialogFlowAction(
       if (
         isDefined(contexts[0]) &&
         (contexts[0].name.includes("order") ||
-          contexts[0].name.includes(
-            "neworder_-_custom_dialog_params_order-pizza"
-          )) &&
+          contexts[0].name.includes("neworder_-_custom_dialog_context")) &&
         contexts[0].parameters
       ) {
         let order_pizza_count =
@@ -252,7 +250,7 @@ function handleDialogFlowAction(
               order_pizza_count +
               "x die Pizza " +
               order_pizza +
-              "bestellen?",
+              " bestellen?",
             buttons
           );
         }, 3000);
