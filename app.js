@@ -222,12 +222,12 @@ function handleDialogFlowAction(
         let order_pizza_count =
           isDefined(contexts[0].parameters.fields["order-pizza-count"]) &&
           contexts[0].parameters.fields["order-pizza-count"] != ""
-            ? contexts[0].parameters.fields["order-pizza-count"].stringValue
+            ? contexts[0].parameters.fields["order-pizza-count"]
             : "";
         let order_pizza =
           isDefined(contexts[0].parameters.fields["order-pizza"]) &&
           contexts[0].parameters.fields["order-pizza"] != ""
-            ? contexts[0].parameters.fields["order-pizza"]
+            ? contexts[0].parameters.fields["order-pizza"].stringValue
             : "";
 
         if (order_pizza != null && order_pizza != "") {
