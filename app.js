@@ -211,9 +211,11 @@ function handleDialogFlowAction(
 ) {
   switch (action) {
     case "newOrder-set":
-      if (isDefined(contexts[0]) &&
-      (contexts[0].name.includes('order-complete') || contexts[0].name.includes('order'))
-      && contexts[0].parameters) {
+      if (
+        isDefined(contexts[0]) &&
+        contexts[0].name.includes("order-complete") &&
+        contexts[0].parameters
+      ) {
         let order_pizza_count =
           isDefined(contexts[0].parameters.fields["order-pizza-count"]) &&
           contexts[0].parameters.fields["order-pizza-count"] != ""
