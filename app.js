@@ -211,11 +211,9 @@ function handleDialogFlowAction(
 ) {
   switch (action) {
     case "newOrder-set":
-      if (
-        isDefined(contexts[0]) &&
-        (contexts[0].name ==
-          "projects/pizzaagentetcetera/agent/sessions/4a822cb0-6c30-21f2-1e0b-6abd6c2e952e/contexts/order")
-      ) {
+      if (isDefined(contexts[0]) &&
+      (contexts[0].name.includes('order-complete') || contexts[0].name.includes('order'))
+      && contexts[0].parameters) {
         let order_pizza_count =
           isDefined(contexts[0].parameters.fields["order-pizza-count"]) &&
           contexts[0].parameters.fields["order-pizza-count"] != ""
