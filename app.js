@@ -230,7 +230,7 @@ function handleDialogFlowAction(
             ? contexts[0].parameters.fields["order-pizza"].stringValue
             : "";
 
-        if (order_pizza != null) {
+        if (order_pizza != null && order_pizza != "") {
           handleMessages(messages, sender);
           sendTypingOn(sender);
           //ask what user wants to do next
