@@ -257,6 +257,8 @@ function handleDialogFlowAction(
               buttons
             );
           }, 3000);
+        } else {
+          handleMessages(messages, sender);
         }
       } else {
         handleMessages(messages, sender);
