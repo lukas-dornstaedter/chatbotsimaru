@@ -227,7 +227,7 @@ function handleDialogFlowAction(
         let order_pizza =
           isDefined(contexts[0].parameters.fields["order-pizza"]) &&
           contexts[0].parameters.fields["order-pizza"] != ""
-            ? contexts[0].parameters.fields["order-pizza"].stringValue
+            ? contexts[0].parameters.fields["order-pizza"]
             : "";
 
         if (order_pizza != null && order_pizza != "") {
