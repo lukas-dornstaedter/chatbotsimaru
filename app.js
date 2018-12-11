@@ -213,7 +213,7 @@ function handleDialogFlowAction(
     case "newOrder-set":
       if (
         isDefined(contexts[0]) &&
-        (contexts[0].name =
+        (contexts[0].name ==
           "projects/pizzaagentetcetera/agent/sessions/4a822cb0-6c30-21f2-1e0b-6abd6c2e952e/contexts/order")
       ) {
         let order_pizza_count =
