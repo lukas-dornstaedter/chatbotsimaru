@@ -258,6 +258,8 @@ function handleDialogFlowAction(
             );
           }, 3000);
         }
+      } else {
+        handleMessages(messages, sender);
       }
       break;
     default:
