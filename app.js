@@ -245,7 +245,7 @@ function handleDialogFlowAction(
           console.log("hallo");
           console.log(JSON.parse(jouput.fields));
           console.log("hallo2");
-          console.log(JSON.parse(jouput.fields).order - pizza.listValue);
+          console.log(JSON.parse(jouput.fields));
         }
 
         if (order_pizza != null && order_pizza != "") {
