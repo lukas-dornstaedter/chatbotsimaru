@@ -237,9 +237,7 @@ function handleDialogFlowAction(
               ).toString()
             : "";
 
-        console.log(
-          JSON.parse(contexts[0].parameters.fields["order-pizza"]).toString()
-        );
+        console.log(order_pizza);
 
         if (order_pizza != null && order_pizza != "") {
           handleMessages(messages, sender);
