@@ -232,12 +232,18 @@ function handleDialogFlowAction(
         let order_pizza =
           isDefined(contexts[0].parameters.fields["order-pizza"]) &&
           contexts[0].parameters.fields["order-pizza"] != ""
-            ? JSON.parse(
-                contexts[0].parameters.fields["order-pizza"]
-              ).toString()
+            ? contexts[0].parameters.fields["order-pizza"].stringValue
             : "";
 
-        console.log(order_pizza);
+        let jouput =
+          isDefined(contexts[0].parameters.fields["order-pizza"]) &&
+          contexts[0].parameters.fields["order-pizza"] != ""
+            ? contexts[0].parameters
+            : "";
+
+        if (isDefined(contexts[0].parameters)) {
+          console.log(jouput);
+        }
 
         if (order_pizza != null && order_pizza != "") {
           handleMessages(messages, sender);
