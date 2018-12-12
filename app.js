@@ -232,8 +232,14 @@ function handleDialogFlowAction(
         let order_pizza =
           isDefined(contexts[0].parameters.fields["order-pizza"]) &&
           contexts[0].parameters.fields["order-pizza"] != ""
-            ? contexts[0].parameters.fields["order-pizza"].toString()
+            ? JSON.parse(
+                contexts[0].parameters.fields["order-pizza"]
+              ).toString()
             : "";
+
+        console.log(
+          JSON.parse(contexts[0].parameters.fields["order-pizza"]).toString()
+        );
 
         if (order_pizza != null && order_pizza != "") {
           handleMessages(messages, sender);
