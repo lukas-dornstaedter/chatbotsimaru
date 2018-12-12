@@ -247,7 +247,7 @@ function handleDialogFlowAction(
           console.log("hallo1");
           console.log(jouput.fields["order-pizza"].listValue.values[0]);
 
-          orderPizzas = [];
+          let orderPizzas = [];
 
           for (
             let i = 0;
