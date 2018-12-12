@@ -241,7 +241,7 @@ function handleDialogFlowAction(
             ? contexts[0].parameters
             : "";
 
-        if (isDefined(contexts[0].parameters)) {
+        if (isDefined(contexts[0].parameters.fields)) {
           console.log("hallo");
           console.log(JSON.parse(jouput.fields));
           console.log("hallo2");
