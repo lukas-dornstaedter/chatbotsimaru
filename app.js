@@ -259,6 +259,20 @@ function handleDialogFlowAction(
             );
           }
 
+          let orderPizzasNumbers = [];
+
+          for (
+            i = 0;
+            i < jouput.fields["order-pizza-count"].listValue.values.length;
+            i++
+          ) {
+            consoloe.log(
+              orderPizzasNumbers.push(
+                jouput.fields["order-pizza-count"].listValue.values[i]
+              )
+            );
+          }
+
           order_pizza = orderPizzas.toString();
         }
 
