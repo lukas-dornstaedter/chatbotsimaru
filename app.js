@@ -278,6 +278,9 @@ function handleDialogFlowAction(
           order_pizza = orderPizzas.toString();
           order_pizza_count = orderPizzasNumbers.toString();
 
+          console.log(orderPizzasNumbers.length);
+          console.log(orderPizzas);
+
           for (let i = 0; i < orderPizzas.length; i++) {
             orderMessage +=
               orderPizzasNumbers[i] + "x die Pizza" + orderPizzas[i] + " ";
