@@ -267,9 +267,7 @@ function handleDialogFlowAction(
             i++
           ) {
             consoloe.log(
-              orderPizzasNumbers.push(
-                jouput.fields["order-pizza-count"].listValue.values[i]
-              )
+              jouput.fields["order-pizza-count"].listValue.values[i]
             );
           }
 
