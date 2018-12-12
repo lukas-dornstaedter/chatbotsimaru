@@ -246,9 +246,20 @@ function handleDialogFlowAction(
           console.log(jouput.fields["order-pizza"].listValue.values.toString());
           console.log("hallo1");
           console.log(jouput.fields["order-pizza"].listValue.values[0]);
-          order_pizza =
-            jouput.fields["order-pizza"].listValue.values[0].stringValue +
-            jouput.fields["order-pizza"].listValue.values[1].stringValue;
+
+          orderPizzas = [];
+
+          for (
+            let i = 0;
+            i < jouput.fields["order-pizza"].listValue.values.length;
+            i++
+          ) {
+            orderPizzas.push(
+              jouput.fields["order-pizza"].listValue.values[i].stringValue
+            );
+          }
+
+          order_pizza = orderPizzas.toString();
         }
 
         if (order_pizza != null && order_pizza != "") {
