@@ -244,6 +244,8 @@ function handleDialogFlowAction(
         if (isDefined(contexts[0].parameters.fields["order-pizza"])) {
           console.log("hallo");
           console.log(jouput.fields["order-pizza"].listValue.values.toString());
+          console.log("hallo1");
+          console.log(jouput.fields["order-pizza"].toString());
         }
 
         if (order_pizza != null && order_pizza != "") {
