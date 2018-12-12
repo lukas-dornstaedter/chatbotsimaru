@@ -275,6 +275,13 @@ function handleDialogFlowAction(
 
           order_pizza = orderPizzas.toString();
           order_pizza_count = orderPizzasNumbers.toString();
+
+          let orderMessage = "";
+
+          for (let i = 0; i < orderPizzas.length; i++) {
+            orderMessage +=
+              orderPizzasNumbers[i] + "x die Pizza" + orderPizzas[i] + " ";
+          }
         }
 
         if (order_pizza != null && order_pizza != "") {
@@ -296,11 +303,7 @@ function handleDialogFlowAction(
             ];
             sendButtonMessage(
               sender,
-              "Du möchtest " +
-                order_pizza_count +
-                "x die Pizza " +
-                order_pizza +
-                " bestellen?",
+              "Du möchtest " + orderMessage + " bestellen?",
               buttons
             );
           }, 3000);
