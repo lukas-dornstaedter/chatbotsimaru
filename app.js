@@ -241,6 +241,8 @@ function handleDialogFlowAction(
             ? contexts[0].parameters
             : "";
 
+        let orderMessage = "";
+
         if (isDefined(contexts[0].parameters.fields["order-pizza"])) {
           console.log("hallo");
           console.log(jouput.fields["order-pizza"].listValue.values.toString());
@@ -275,8 +277,6 @@ function handleDialogFlowAction(
 
           order_pizza = orderPizzas.toString();
           order_pizza_count = orderPizzasNumbers.toString();
-
-          let orderMessage = "";
 
           for (let i = 0; i < orderPizzas.length; i++) {
             orderMessage +=
