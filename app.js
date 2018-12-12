@@ -242,6 +242,7 @@ function handleDialogFlowAction(
             : "";
 
         if (isDefined(contexts[0].parameters)) {
+          console.log("hallo");
           console.log(jouput);
         }
 
