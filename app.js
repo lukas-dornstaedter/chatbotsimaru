@@ -283,7 +283,7 @@ function handleDialogFlowAction(
 
           for (let i = 0; i < orderPizzas.length; i++) {
             orderMessage +=
-              orderPizzasNumbers[i] + "x die Pizza" + orderPizzas[i] + " ";
+              orderPizzasNumbers[i] + "x die Pizza " + orderPizzas[i] + " ";
           }
         }
 
@@ -306,7 +306,7 @@ function handleDialogFlowAction(
             ];
             sendButtonMessage(
               sender,
-              "Du möchtest " + orderMessage + " bestellen?",
+              "Du möchtest " + orderMessage + "bestellen?",
               buttons
             );
           }, 3000);
