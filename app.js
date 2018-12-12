@@ -261,9 +261,20 @@ function handleDialogFlowAction(
 
           let orderPizzasNumbers = [];
 
-          console.log(jouput.fields["order-pizza-count"].listValue);
+          for (
+            let i = 0;
+            i < jouput.fields["order-pizza-count"].listValue.values.length;
+            i++
+          ) {
+            orderPizzas.push(
+              jouput.fields["order-pizza-count"].listValue.values[i].numberValue
+            );
+          }
+
+          //console.log(jouput.fields["order-pizza-count"].listValue);
 
           order_pizza = orderPizzas.toString();
+          order_pizza_count = orderPizzasNumbers.toString();
         }
 
         if (order_pizza != null && order_pizza != "") {
