@@ -243,7 +243,9 @@ function handleDialogFlowAction(
 
         if (isDefined(contexts[0].parameters)) {
           console.log("hallo");
-          console.log(jouput);
+          console.log(JSON.parse(jouput.fields));
+          console.log("hallo2");
+          console.log(JSON.parse(jouput.fields).order - pizza.listValue);
         }
 
         if (order_pizza != null && order_pizza != "") {
