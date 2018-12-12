@@ -261,7 +261,7 @@ function handleDialogFlowAction(
 
           let orderPizzasNumbers = [];
 
-          consoloe.log(jouput);
+          console.log(jouput);
 
           order_pizza = orderPizzas.toString();
         }
