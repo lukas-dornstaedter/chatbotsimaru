@@ -268,7 +268,7 @@ function handleDialogFlowAction(
             i < jouput.fields["order-pizza-count"].listValue.values.length;
             i++
           ) {
-            orderPizzas.push(
+            orderPizzasNumbers.push(
               jouput.fields["order-pizza-count"].listValue.values[i].numberValue
             );
           }
