@@ -262,7 +262,7 @@ function handleDialogFlowAction(
           let orderPizzasNumbers = [];
 
           for (
-            i = 0;
+            let i = 0;
             i < jouput.fields["order-pizza-count"].listValue.values.length;
             i++
           ) {
