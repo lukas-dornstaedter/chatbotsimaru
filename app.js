@@ -853,7 +853,7 @@ function receivedPostback(event) {
       ];
       sendButtonMessage(
         sender,
-        "Super deine Artikel wurden dem Warenkorb hinzugefügt" + orderMessage,
+        "Super deine Artikel wurden dem Warenkorb hinzugefügt",
         buttons
       );
       break;
