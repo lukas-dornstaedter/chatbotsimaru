@@ -296,7 +296,7 @@ function handleDialogFlowAction(
               {
                 type: "postback",
                 title: "stimmt",
-                payload: "TRUE"
+                payload: "stimmt"
               },
               {
                 type: "postback",
@@ -833,9 +833,12 @@ function receivedPostback(event) {
   var payload = event.postback.payload;
 
   switch (payload) {
-    case 'stimmt':
-    sendTextMessage(senderID, "Super deine Artikel wurden dem Warenkorb hinzugefügt");
-    break;
+    case "stimmt":
+      sendTextMessage(
+        senderID,
+        "Super deine Artikel wurden dem Warenkorb hinzugefügt"
+      );
+      break;
 
     default:
       //unindentified payload
