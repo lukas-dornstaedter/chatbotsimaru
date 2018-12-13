@@ -834,9 +834,27 @@ function receivedPostback(event) {
 
   switch (payload) {
     case "stimmt":
-      sendTextMessage(
-        senderID,
-        "Super deine Artikel wurden dem Warenkorb hinzugefügt"
+      let buttons = [
+        {
+          type: "postback",
+          title: "Warenkorb anzeigen",
+          payload: "stimmt"
+        },
+        {
+          type: "postback",
+          title: "ich brauch noch mehr",
+          payload: "FALSE"
+        },
+        {
+          type: "postback",
+          title: "Bestellung abschicken",
+          payload: "FALSE"
+        }
+      ];
+      sendButtonMessage(
+        sender,
+        "Super deine Artikel wurden dem Warenkorb hinzugefügt" + orderMessage,
+        buttons
       );
       break;
 
