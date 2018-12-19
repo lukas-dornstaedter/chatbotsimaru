@@ -210,6 +210,34 @@ function handleDialogFlowAction(
   parameters
 ) {
   switch (action) {
+    case "get-shipping-number":
+      if (
+        isDefined(contexts[0]) &&
+        (contexts[0].name.includes("ordernumberset") ||
+          contexts[0].name.includes(
+            "12c16b4c-6fd0-4311-ae8f-6de5dd2b8096_id_dialog_context"
+          )) &&
+        contexts[0].parameters
+      ) {
+        let jouput =
+          isDefined(contexts[0].parameters.fields["orderNumber"]) &&
+          contexts[0].parameters.fields["orderNumber"] != ""
+            ? contexts[0].parameters
+            : "";
+
+        let orderMessage = "";
+
+        if (isDefined(contexts[0].parameters.fields["orderNumber"])) {
+          let orderNumber =
+            jouput.fields["orderNumber"].listValue.values[i].stringValue;
+
+          sendTextMessage(sender, "OK? " + orderNumber);
+        }
+      } else {
+        handleMessages(messages, sender);
+      }
+      break;
+
     case "newOrder-set":
       if (
         isDefined(contexts[0]) &&
