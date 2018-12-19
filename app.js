@@ -251,8 +251,9 @@ function handleDialogFlowAction(
             },
             function(error, response, body) {
               // Do more stuff with 'body' here
-              console.log(body.Data);
-              let trackingNumber = body.Data.ShippingIds[0].ShippingId;
+              //console.log(body.Data);
+              let data = JSON.parse(body);
+              let trackingNumber = data.Data.ShippingIds[0].ShippingId;
               sendTextMessage(
                 sender,
                 "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
