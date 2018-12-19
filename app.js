@@ -228,8 +228,7 @@ function handleDialogFlowAction(
         let orderMessage = "";
 
         if (isDefined(contexts[0].parameters.fields["orderNumber"])) {
-          let orderNumber =
-            jouput.fields["orderNumber"].listValue.values[i].stringValue;
+          let orderNumber = jouput.fields["orderNumber"].stringValue;
 
           sendTextMessage(sender, "OK? " + orderNumber);
         }
