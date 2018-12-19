@@ -232,7 +232,7 @@ function handleDialogFlowAction(
 
         if (isDefined(contexts[0].parameters.fields["orderNumber"])) {
           let orderNumber = jouput.fields["orderNumber"].stringValue;
-          zipCode = jouput.fields[zipCode].stringValue;
+          zipCode = jouput.fields[zipCode].numberValue;
 
           var request = require("request"),
             username = config.BILLBEE_USERNAME,
