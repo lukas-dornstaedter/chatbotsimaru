@@ -251,6 +251,7 @@ function handleDialogFlowAction(
             },
             function(error, response, body) {
               // Do more stuff with 'body' here
+              console.log(body.Data);
               let trackingNumber = body.Data.ShippingIds[0].ShippingId;
               sendTextMessage(
                 sender,
