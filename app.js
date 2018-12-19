@@ -213,7 +213,7 @@ function handleDialogFlowAction(
     case "get-shipping-number":
       if (
         isDefined(contexts[0].parameters.fields["orderNumber"]) &&
-        contexts[0].parameters.fields["orderNumber"] != "" &&
+        contexts[0].parameters.fields["orderNumber"].stringValue != "" &&
         (contexts[0].name.includes("ordernumberset") ||
           contexts[0].name.includes(
             "12c16b4c-6fd0-4311-ae8f-6de5dd2b8096_id_dialog_context"
