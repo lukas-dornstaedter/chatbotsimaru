@@ -7,5 +7,8 @@ module.exports = {
   DF_LANGUAGE_CODE: "de_DE",
   GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
   GOOGLE_PRIVATE_KEY: JSON.parse(process.env.GOOGLE_PRIVATE_KEY),
-  FB_APP_ID: process.env.FB_APP_ID
+  FB_APP_ID: process.env.FB_APP_ID,
+  BILLBEE_USERNAME: process.env.BILLBEE_USERNAME,
+  BILLBEE_PASS: process.env.BILLBEE_PASS,
+  BILLBEE_API_KEY: process.env.BILLBEE_API_KEY
 };
