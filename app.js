@@ -251,12 +251,14 @@ function handleDialogFlowAction(
             },
             function(error, response, body) {
               // Do more stuff with 'body' here
-              console.log(response);
-              console.log(body);
+              let trackingNumber = body.Data.ShippingIds[0].ShippingId;
+              sendTextMessage(
+                sender,
+                "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
+                  trackingNumber
+              );
             }
           );
-
-          sendTextMessage(sender, "OK? " + orderNumber);
         } else {
           handleMessages(messages, sender);
         }
