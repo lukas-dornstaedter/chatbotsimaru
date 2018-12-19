@@ -228,10 +228,11 @@ function handleDialogFlowAction(
             : "";
 
         let orderMessage = "";
+        let zipCode = null;
 
         if (isDefined(contexts[0].parameters.fields["orderNumber"])) {
           let orderNumber = jouput.fields["orderNumber"].stringValue;
-          let zipCode = jouput.fields[zipCode].stringValue;
+          zipCode = jouput.fields[zipCode].stringValue;
 
           var request = require("request"),
             username = config.BILLBEE_USERNAME,
@@ -259,17 +260,14 @@ function handleDialogFlowAction(
               let trackingNumber = data.Data.ShippingIds[0].ShippingId;
               let adressZipCode = data.Data.ShippingAddress.Zip;
 
-              if(adressZipCode == zipCode){
-              sendTextMessage(
-                sender,
-                "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
-                  trackingNumber
-              );
-              } else {
+              if (adressZipCode == zipCode) {
                 sendTextMessage(
                   sender,
-                  "Da stimmt was nicht..."
+                  "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
+                    trackingNumber
                 );
+              } else {
+                sendTextMessage(sender, "Da stimmt was nicht...");
               }
             }
           );
