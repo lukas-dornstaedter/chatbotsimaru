@@ -232,6 +232,8 @@ function handleDialogFlowAction(
           let orderNumber = jouput.fields["orderNumber"].stringValue;
 
           sendTextMessage(sender, "OK? " + orderNumber);
+        } else {
+          handleMessages(messages, sender);
         }
       } else {
         handleMessages(messages, sender);
