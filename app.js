@@ -231,6 +231,31 @@ function handleDialogFlowAction(
         if (isDefined(contexts[0].parameters.fields["orderNumber"])) {
           let orderNumber = jouput.fields["orderNumber"].stringValue;
 
+          var request = require("request"),
+            username = config.BILLBEE_USERNAME,
+            password = confic.BILLBEE_PASS,
+            url =
+              "https://app.billbee.io/api/v1/orders/findbyextref/c6e2cd89-b4f9-4e65-8365-efc8d6f41a2c",
+            auth =
+              "Basic " +
+              new Buffer(username + ":" + password).toString("base64");
+
+          request(
+            {
+              url: url,
+              headers: {
+                Authorization: auth,
+                "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+                Accept: "application/json"
+              }
+            },
+            function(error, response, body) {
+              // Do more stuff with 'body' here
+              console.log(response);
+              console.log(body);
+            }
+          );
+
           sendTextMessage(sender, "OK? " + orderNumber);
         } else {
           handleMessages(messages, sender);
