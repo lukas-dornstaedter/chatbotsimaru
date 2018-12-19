@@ -233,7 +233,7 @@ function handleDialogFlowAction(
 
           var request = require("request"),
             username = config.BILLBEE_USERNAME,
-            password = confic.BILLBEE_PASS,
+            password = config.BILLBEE_PASS,
             url =
               "https://app.billbee.io/api/v1/orders/findbyextref/c6e2cd89-b4f9-4e65-8365-efc8d6f41a2c",
             auth =
