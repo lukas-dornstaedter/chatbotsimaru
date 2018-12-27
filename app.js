@@ -259,15 +259,28 @@ function handleDialogFlowAction(
               let data = JSON.parse(body);
               let trackingNumber = data.Data.ShippingIds[0].ShippingId;
               let adressZipCode = data.Data.ShippingAddress.Zip;
+              let orderStatus = data.Data.State;
 
-              if (adressZipCode == zipCode) {
+              if (orderStatus == 4) {
+                if (adressZipCode == zipCode) {
+                  sendTextMessage(
+                    sender,
+                    "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
+                      trackingNumber
+                  );
+                } else {
+                  sendTextMessage(sender, "Da stimmt was nicht...");
+                }
+              } else if (orderStatus == 3) {
                 sendTextMessage(
                   sender,
-                  "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
-                    trackingNumber
+                  "Deine Zahlung ist bei uns eingegangen. Deine Bestellung wird im nächsten Schritt verpackt und versendet."
                 );
-              } else {
-                sendTextMessage(sender, "Da stimmt was nicht...");
+              } else if (orderStatus == 2) {
+                sendTextMessage(
+                  sender,
+                  "Deine Bestellung wurde erfolgreich aufgegeben. Wir warten nun noch auf die Bestätigung der Zahlung."
+                );
               }
             }
           );
