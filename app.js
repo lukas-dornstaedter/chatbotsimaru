@@ -257,7 +257,7 @@ function handleDialogFlowAction(
               // Do more stuff with 'body' here
               //console.log(body.Data);
               let data = JSON.parse(body);
-              if (isDefined(data.Data.ShippingIds[0].ShippingId)) {
+              if (data.Data.ShippingIds.length > 0) {
                 let trackingNumber = data.Data.ShippingIds[0].ShippingId;
               }
               let adressZipCode = data.Data.ShippingAddress.Zip;
