@@ -264,9 +264,6 @@ function handleDialogFlowAction(
                   "Wir konnten leider keine Bestellung zu diesen Daten finden. Bitte versuche es erneut oder kontaktiere uns unter support@simaru.de"
                 );
               } else {
-                if (data.Data.ShippingIds.length > 0) {
-                  let trackingNumber = data.Data.ShippingIds[0].ShippingId;
-                }
                 let adressZipCode = data.Data.ShippingAddress.Zip;
                 let orderStatus = data.Data.State;
 
@@ -277,11 +274,23 @@ function handleDialogFlowAction(
                   );
                 } else {
                   if (orderStatus == 4) {
-                    sendTextMessage(
-                      sender,
-                      "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
-                        trackingNumber
-                    );
+                    if (data.Data.ShippingIds.length > 0) {
+                      let shipper = data.Data.ShippingIds[0].shipper;
+                      let trackingNumber = data.Data.ShippingIds[0].ShippingId;
+
+                      if (shipper == "Amazon FBA (GmbH)") {
+                        sendTextMessage(
+                          sender,
+                          "Deine Bestellung wurde versendet. Es gibt keinen Tracking Code zu deiner Bestellung."
+                        );
+                      } else {
+                        sendTextMessage(
+                          sender,
+                          "Deine Bestellung wurde per DHL versendet. Du kannst die Bestellung unter folgendem Link verfolgen: https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
+                            trackingNumber
+                        );
+                      }
+                    }
                   } else if (orderStatus == 3) {
                     sendTextMessage(
                       sender,
