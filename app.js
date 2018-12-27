@@ -257,32 +257,43 @@ function handleDialogFlowAction(
               // Do more stuff with 'body' here
               //console.log(body.Data);
               let data = JSON.parse(body);
-              if (data.Data.ShippingIds.length > 0) {
-                let trackingNumber = data.Data.ShippingIds[0].ShippingId;
-              }
-              let adressZipCode = data.Data.ShippingAddress.Zip;
-              let orderStatus = data.Data.State;
 
-              if (orderStatus == 4) {
-                if (adressZipCode == zipCode) {
+              if (data.Data.ErrorCode == 2) {
+                sendTextMessage(
+                  sender,
+                  "Wir konnten leider keine Bestellung zu diesen Daten finden. Bitte versuche es erneut oder kontaktiere uns unter support@simaru.de"
+                );
+              } else {
+                if (data.Data.ShippingIds.length > 0) {
+                  let trackingNumber = data.Data.ShippingIds[0].ShippingId;
+                }
+                let adressZipCode = data.Data.ShippingAddress.Zip;
+                let orderStatus = data.Data.State;
+
+                if (orderStatus == 4) {
+                  if (adressZipCode == zipCode) {
+                    sendTextMessage(
+                      sender,
+                      "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
+                        trackingNumber
+                    );
+                  } else {
+                    sendTextMessage(
+                      sender,
+                      "Wir konnten leider keine Bestellung zu diesen Daten finden. Bitte versuche es erneut oder kontaktiere uns unter support@simaru.de"
+                    );
+                  }
+                } else if (orderStatus == 3) {
                   sendTextMessage(
                     sender,
-                    "https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
-                      trackingNumber
+                    "Deine Zahlung ist bei uns eingegangen. Deine Bestellung wird im nächsten Schritt verpackt und versendet."
                   );
-                } else {
-                  sendTextMessage(sender, "Da stimmt was nicht...");
+                } else if (orderStatus == 2) {
+                  sendTextMessage(
+                    sender,
+                    "Deine Bestellung wurde erfolgreich aufgegeben. Wir warten nun noch auf die Bestätigung der Zahlung."
+                  );
                 }
-              } else if (orderStatus == 3) {
-                sendTextMessage(
-                  sender,
-                  "Deine Zahlung ist bei uns eingegangen. Deine Bestellung wird im nächsten Schritt verpackt und versendet."
-                );
-              } else if (orderStatus == 2) {
-                sendTextMessage(
-                  sender,
-                  "Deine Bestellung wurde erfolgreich aufgegeben. Wir warten nun noch auf die Bestätigung der Zahlung."
-                );
               }
             }
           );
