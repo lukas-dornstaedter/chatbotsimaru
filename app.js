@@ -275,7 +275,7 @@ function handleDialogFlowAction(
                 } else {
                   if (orderStatus == 4) {
                     if (data.Data.ShippingIds.length > 0) {
-                      let shipper = data.Data.ShippingIds[0].shipper;
+                      let shipper = data.Data.ShippingIds[0].Shipper;
                       let trackingNumber = data.Data.ShippingIds[0].ShippingId;
 
                       if (shipper == "Amazon FBA (GmbH)") {
