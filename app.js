@@ -258,7 +258,7 @@ function handleDialogFlowAction(
               //console.log(body.Data);
               let data = JSON.parse(body);
 
-              if (data.Data.ErrorCode == 2) {
+              if (data.ErrorCode == 2) {
                 sendTextMessage(
                   sender,
                   "Wir konnten leider keine Bestellung zu diesen Daten finden. Bitte versuche es erneut oder kontaktiere uns unter support@simaru.de"
