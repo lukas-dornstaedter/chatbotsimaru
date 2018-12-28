@@ -291,6 +291,11 @@ function handleDialogFlowAction(
                         );
                       }
                     }
+                  } else if(orderStatus == 13){
+                    sendTextMessage(
+                      sender,
+                      "Deine Bestellung wird soeben verpackt."
+                    );
                   } else if (orderStatus == 3) {
                     sendTextMessage(
                       sender,
