@@ -223,7 +223,7 @@ function handleDialogFlowAction(
           const sgMail = require("@sendgrid/mail");
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           const msg = {
-            to: "test@example.com",
+            to: "support@simaru.zohodesk.eu",
             from: customerEmail,
             subject: "Facebook Messenger Support Ticket",
             text: customerMessage,
