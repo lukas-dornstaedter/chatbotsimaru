@@ -220,9 +220,22 @@ function handleDialogFlowAction(
             customerMessage =
               contexts[0].parameters.fields["customerMessage"].stringValue;
 
+          const sgMail = require("@sendgrid/mail");
+          sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+          const msg = {
+            to: "test@example.com",
+            from: customerEmail,
+            subject: "Facebook Messenger Support Ticket",
+            text: customerMessage,
+            html: `<strong>${customerMessage}</strong>`
+          };
+          sgMail.send(msg);
+
           sendTextMessage(
             sender,
-            "Juhu " + customerName + customerEmail + customerMessage
+            "Danke " +
+              customerName +
+              "! Deine Nachricht wurde an einen Support Mitarbeiter weitergeleitet."
           );
         }
       } else {
