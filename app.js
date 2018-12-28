@@ -213,11 +213,18 @@ function handleDialogFlowAction(
     case "create-support-ticket":
       if (contexts[0].name.includes("defaultfallbackintent-followup")) {
         if (isDefined(contexts[0].parameters.fields["customerName"])) {
-          let customerName = contexts[0].parameters.fields["customerName"].stringValue,
-          customerEmail = contexts[0].parameters.fields["customerEmail"].stringValue,
-          customerMessage =  contexts[0].parameters.fields["customerMessage"].stringValue,
+          let customerName =
+              contexts[0].parameters.fields["customerName"].stringValue,
+            customerEmail =
+              contexts[0].parameters.fields["customerEmail"].stringValue,
+            customerMessage =
+              contexts[0].parameters.fields["customerMessage"].stringValue;
+
+          sendTextMessage(
+            sender,
+            "Juhu " + customerName + customerEmail + customerMessage
+          );
         }
-        sendTextMessage(sender, "Juhu " + customerName + customerEmail + customerMessage);
       } else {
         handleMessages(messages, sender);
       }
