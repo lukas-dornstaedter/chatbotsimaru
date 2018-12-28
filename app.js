@@ -210,6 +210,11 @@ function handleDialogFlowAction(
   parameters
 ) {
   switch (action) {
+    case "create-support-ticket":
+      if (contexts[0].name.includes("defaultfallbackintent-followup")) {
+        sendTextMessage(sender, "Juhu.");
+      }
+      break;
     case "get-shipping-number":
       if (
         isDefined(contexts[0].parameters.fields["orderNumber"]) &&
@@ -291,7 +296,7 @@ function handleDialogFlowAction(
                         );
                       }
                     }
-                  } else if(orderStatus == 13){
+                  } else if (orderStatus == 13) {
                     sendTextMessage(
                       sender,
                       "Deine Bestellung wird soeben verpackt."
