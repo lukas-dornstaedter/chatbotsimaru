@@ -213,6 +213,8 @@ function handleDialogFlowAction(
     case "create-support-ticket":
       if (contexts[0].name.includes("defaultfallbackintent-followup")) {
         sendTextMessage(sender, "Juhu.");
+      } else {
+        handleMessages(messages, sender);
       }
       break;
     case "get-shipping-number":
