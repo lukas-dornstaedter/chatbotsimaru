@@ -13,7 +13,7 @@ router.get("/settings", function(req, res) {
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
-    url = "https://app.billbee.io/api/v1/orders/findbyextref/" + orderNumber,
+    url = "https://app.billbee.io/api/v1/orders/findbyextref/7191",
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
   request(
