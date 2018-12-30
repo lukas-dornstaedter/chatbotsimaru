@@ -43,6 +43,7 @@
       window.extAsyncInit = function() {
         // the Messenger Exstensions JS SDK is done loading
         $.getJSON("/webviews/settings", function(data) {
+          console.log("hallo wie geht es dir :-)");
           console.log(data);
         });
       };
