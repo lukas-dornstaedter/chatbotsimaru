@@ -16,6 +16,7 @@
     "@sendgrid/mail": "^6.3.1",
     "body-parser": "^1.18.3",
     "dialogflow": "^0.5.0",
+    "ejs": "^2.6.1",
     "express": "^4.16.3",
     "request": "^2.87.0",
     "uuid": "^3.3.2"
