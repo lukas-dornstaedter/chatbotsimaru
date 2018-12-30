@@ -10,8 +10,31 @@ router.get("/webview", function(req, res) {
 });
 
 router.get("/settings", function(req, res) {
-  let response = `Newsletter wie geht es dir`;
-  res.json([]);
+  var request = require("request"),
+    username = config.BILLBEE_USERNAME,
+    password = config.BILLBEE_PASS,
+    url = "https://app.billbee.io/api/v1/orders/findbyextref/" + orderNumber,
+    auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+
+  request(
+    {
+      url: url,
+      headers: {
+        Authorization: auth,
+        "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+        Accept: "application/json"
+      }
+    },
+    function(error, response, body) {
+      // Do more stuff with 'body' here
+      //console.log(body.Data);
+      let data = JSON.parse(body);
+      let items = data.Data.OrderItems;
+      res.json(items);
+    }
+  );
+  //let response = `Newsletter wie geht es dir`;
+  //res.json([]);
 });
 
 module.exports = router;
