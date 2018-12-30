@@ -71,7 +71,12 @@
       window.extAsyncInit = function() {
         // the Messenger Exstensions JS SDK is done loading
         console.log("hallo hallo");
-        $.getJSON("/webviews/settings", function(data) {
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        if (url.searchParams.get("orderID") != null) {
+          var orderID = url.searchParams.get("orderID");
+        }
+        $.getJSON("/webviews/settings?orderid=" + orderID, function(data) {
           console.log("hallo wie geht es dir :-)");
           console.log(data);
           data.forEach(element => {

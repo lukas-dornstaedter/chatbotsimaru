@@ -9,11 +9,12 @@ router.get("/webview", function(req, res) {
   res.render("retour-settings");
 });
 
-router.get("/settings", function(req, res) {
+router.get("/settings/:orderid", function(req, res) {
+  var orderID = req.params.orderid;
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
-    url = "https://app.billbee.io/api/v1/orders/findbyextref/7191",
+    url = "https://app.billbee.io/api/v1/orders/findbyextref/" + orderID,
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
   request(
