@@ -9,6 +9,8 @@ const request = require("request");
 const app = express();
 const uuid = require("uuid");
 
+const webviews = require("./routes/webviews");
+
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
   throw new Error("missing FB_PAGE_TOKEN");
@@ -74,6 +76,10 @@ const sessionIds = new Map();
 app.get("/", function(req, res) {
   res.send("Hello world, I am a chat bot");
 });
+
+app.set("view engine", "ejs");
+
+app.use("/webviews", webviews);
 
 // for Facebook verification
 app.get("/webhook/", function(req, res) {
@@ -210,6 +216,24 @@ function handleDialogFlowAction(
   parameters
 ) {
   switch (action) {
+    case "test":
+      sendTypingOn(sender);
+
+      //ask what user wants to do next
+      setTimeout(function() {
+        let buttons = [
+          {
+            title: "Settings",
+            type: "web_url",
+            url: "https://simaruchatbot.herokuapp.com/webviews/webview",
+            webview_height_ratio: "tall",
+            messenger_extensions: true
+          }
+        ];
+
+        sendButtonMessage(sender, "What would you like to do next?", buttons);
+      }, 3000);
+      break;
     case "create-support-ticket":
       if (contexts[0].name.includes("defaultfallbackintent-followup")) {
         if (isDefined(contexts[0].parameters.fields["customerName"])) {
