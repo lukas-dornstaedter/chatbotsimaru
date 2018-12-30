@@ -10,6 +10,7 @@ router.get("/webview", function(req, res) {
 });
 
 router.get("/settings", function(req, res) {
+  console.log("hallo");
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
