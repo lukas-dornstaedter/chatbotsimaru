@@ -226,7 +226,7 @@ function handleDialogFlowAction(
             title: "Settings",
             type: "web_url",
             url: "https://simaruchatbot.herokuapp.com/webviews/webview",
-            webview_height_ratio: "tall",
+            webview_height_ratio: "compact",
             messenger_extensions: true
           }
         ];
