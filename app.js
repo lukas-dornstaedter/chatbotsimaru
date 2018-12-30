@@ -230,7 +230,8 @@ function handleDialogFlowAction(
                 title: "Settings",
                 type: "web_url",
                 url:
-                  "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=7191",
+                  "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=" +
+                  orderID,
                 webview_height_ratio: "tall",
                 messenger_extensions: true
               }
@@ -238,7 +239,7 @@ function handleDialogFlowAction(
 
             sendButtonMessage(
               sender,
-              "What would you like to do next?",
+              "Bitte wähle hier aus, welche Artikel du zurück senden möchtest...",
               buttons
             );
           }, 3000);
