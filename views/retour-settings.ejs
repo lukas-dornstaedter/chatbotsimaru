@@ -27,7 +27,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Rücksendung Anküdnigen</h1>
+      <h1 style="font-size: 28px;">Rücksendung Ankündigen</h1>
       <div class="row">
         <div class="input-field col s12" id="item-checkboxes"></div>
       </div>
@@ -64,7 +64,8 @@
           console.log("hallo wie geht es dir :-)");
           console.log(data);
           data.forEach(element => {
-            let i = `<label>
+            let i = document.createElement("div");
+            i.innerHTML = `<label>
         <input id="${element.TransactionId}" type="checkbox" />
         <span>${element.Product.Title}</span>
       </label>`;
