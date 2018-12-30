@@ -217,24 +217,32 @@ function handleDialogFlowAction(
 ) {
   switch (action) {
     case "retour":
-      if (isDefined(contexts[0].parameters.fields["orderID"])) {
+      if (contexts[0].name.includes("retourinfoset")) {
         sendTypingOn(sender);
 
-        //ask what user wants to do next
-        setTimeout(function() {
-          let buttons = [
-            {
-              title: "Settings",
-              type: "web_url",
-              url:
-                "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=7191",
-              webview_height_ratio: "tall",
-              messenger_extensions: true
-            }
-          ];
+        if (isDefined(contexts[0].parameters.fields["orderID"])) {
+          let orderID = contexts[0].parameters.fields["orderID"].stringValue;
 
-          sendButtonMessage(sender, "What would you like to do next?", buttons);
-        }, 3000);
+          //ask what user wants to do next
+          setTimeout(function() {
+            let buttons = [
+              {
+                title: "Settings",
+                type: "web_url",
+                url:
+                  "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=7191",
+                webview_height_ratio: "tall",
+                messenger_extensions: true
+              }
+            ];
+
+            sendButtonMessage(
+              sender,
+              "What would you like to do next?",
+              buttons
+            );
+          }, 3000);
+        }
       } else {
         handleMessages(messages, sender);
       }
