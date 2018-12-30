@@ -73,8 +73,9 @@
         console.log("hallo hallo");
         var url_string = window.location.href;
         var url = new URL(url_string);
-        if (url.searchParams.get("orderID") != null) {
-          var orderID = url.searchParams.get("orderID");
+        if (url.searchParams.get("orderid") != null) {
+          var orderID = url.searchParams.get("orderid");
+          console.log(orderID);
         }
         $.getJSON("/webviews/settings?orderid=" + orderID, function(data) {
           console.log("hallo wie geht es dir :-)");
