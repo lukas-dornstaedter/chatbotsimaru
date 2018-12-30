@@ -10,7 +10,7 @@ router.get("/webview", function(req, res) {
 });
 
 router.get("/settings", function(req, res) {
-  var orderID = req.params.orderid;
+  var orderID = req.query.orderid;
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
