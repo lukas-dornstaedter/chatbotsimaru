@@ -27,8 +27,22 @@
   </head>
   <body>
     <div class="container">SAMPLE WEBVIEW</div>
-
-    <form id="retoure-form"></form>
+    <div class="row">
+      <div class="input-field col s12" id="item-checkboxes"></div>
+    </div>
+    <form id="retoure-form">
+      <div class="row">
+        <div class="input-field col s12">
+          <input
+            placeholder="gib uns die Chance noch besser zu werden"
+            id="first_name"
+            type="text"
+            class="validate"
+          />
+        </div>
+      </div>
+      <label for="retour_reason">Rücksendegrund</label>
+    </form>
 
     <script>
       (function(d, s, id) {
@@ -49,7 +63,11 @@
           console.log("hallo wie geht es dir :-)");
           console.log(data);
           data.forEach(element => {
-            console.log(element.Product.Title);
+            let i = `<label>
+        <input id="${element.TransactionId}" type="checkbox" />
+        <span>${element.Product.Title}</span>
+      </label>`;
+            document.querySelector("#item-checkboxes").appendChild(i);
           });
         });
       };
