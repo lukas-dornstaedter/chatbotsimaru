@@ -9,54 +9,6 @@
   <body>
     <div class="container">SAMPLE WEBVIEW</div>
 
-    <div id="form-80241-wrapper">
-      <form
-        id="ktv2-form-80241"
-        accept-charset="UTF-8"
-        method="post"
-        action="https://www.klick-tipp.com/api/subscriber/signin.html"
-      >
-        <input
-          type="hidden"
-          id="FormField_ApiKey"
-          name="apikey"
-          value="1uhlz1cblz8za34f"
-        /><input
-          type="hidden"
-          id="FormField_Digit"
-          name="fields[fieldDigit]"
-          value=""
-        />
-        <div class="ktv2-form-element">
-          <label for="FormField_FirstName">Vorname: </label><br /><input
-            type="text"
-            id="FormField_FirstName"
-            name="fields[fieldFirstName]"
-            value=""
-          />
-        </div>
-        <div class="ktv2-form-element">
-          <label for="FormField_EmailAddress">Ihre E-Mail-Adresse: </label
-          ><br /><input
-            type="text"
-            id="FormField_EmailAddress"
-            name="email"
-            value=""
-            size="40"
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="submit"
-            id="FormSubmit"
-            name="FormSubmit"
-            value="Ihr Button-Text"
-          />
-        </div>
-      </form>
-    </div>
-
     <script>
       (function(d, s, id) {
         var js,
@@ -71,6 +23,9 @@
       })(document, "script", "Messenger");
       window.extAsyncInit = function() {
         // the Messenger Exstensions JS SDK is done loading
+        $.getJSON("/webviews/settings", function(data) {
+          console.log(data);
+        });
       };
     </script>
   </body>
