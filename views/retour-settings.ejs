@@ -28,6 +28,8 @@
   <body>
     <div class="container">SAMPLE WEBVIEW</div>
 
+    <form id="retoure-form"></form>
+
     <script>
       (function(d, s, id) {
         var js,
@@ -46,6 +48,9 @@
         $.getJSON("/webviews/settings", function(data) {
           console.log("hallo wie geht es dir :-)");
           console.log(data);
+          data.array.forEach(element => {
+            console.log(element.Product.Title);
+          });
         });
       };
     </script>
