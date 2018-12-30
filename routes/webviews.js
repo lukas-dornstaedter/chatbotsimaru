@@ -11,7 +11,7 @@ router.get("/webview", function(req, res) {
 
 router.get("/settings", function(req, res) {
   let response = `Newsletter wie geht es dir`;
-  res.send(response);
+  res.json([]);
 });
 
 module.exports = router;
