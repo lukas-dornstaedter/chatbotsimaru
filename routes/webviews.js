@@ -9,7 +9,7 @@ router.get("/webview", function(req, res) {
   res.render("retour-settings");
 });
 
-router.get("/settings/:orderid", function(req, res) {
+router.get("/settings", function(req, res) {
   var orderID = req.params.orderid;
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
