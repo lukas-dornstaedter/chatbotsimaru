@@ -48,7 +48,7 @@
         $.getJSON("/webviews/settings", function(data) {
           console.log("hallo wie geht es dir :-)");
           console.log(data);
-          data.array.forEach(element => {
+          data.forEach(element => {
             console.log(element.Product.Title);
           });
         });
