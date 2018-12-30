@@ -2,7 +2,6 @@
 
 const config = require("../config");
 const express = require("express");
-const fbservice = require("../services/fb-service");
 
 const router = express.Router();
 
