@@ -29,7 +29,7 @@ router.get("/settings", function(req, res) {
       // Do more stuff with 'body' here
       //console.log(body.Data);
       let data = JSON.parse(body);
-
+      console.log(data.Data.OrderItems);
       res.json(data.Data.OrderItems);
     }
   );
