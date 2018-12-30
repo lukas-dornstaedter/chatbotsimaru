@@ -216,24 +216,28 @@ function handleDialogFlowAction(
   parameters
 ) {
   switch (action) {
-    case "test":
-      sendTypingOn(sender);
+    case "retour":
+      if (isDefined(contexts[0].parameters.fields["orderID"])) {
+        sendTypingOn(sender);
 
-      //ask what user wants to do next
-      setTimeout(function() {
-        let buttons = [
-          {
-            title: "Settings",
-            type: "web_url",
-            url:
-              "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=7191",
-            webview_height_ratio: "tall",
-            messenger_extensions: true
-          }
-        ];
+        //ask what user wants to do next
+        setTimeout(function() {
+          let buttons = [
+            {
+              title: "Settings",
+              type: "web_url",
+              url:
+                "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=7191",
+              webview_height_ratio: "tall",
+              messenger_extensions: true
+            }
+          ];
 
-        sendButtonMessage(sender, "What would you like to do next?", buttons);
-      }, 3000);
+          sendButtonMessage(sender, "What would you like to do next?", buttons);
+        }, 3000);
+      } else {
+        handleMessages(messages, sender);
+      }
       break;
     case "create-support-ticket":
       if (contexts[0].name.includes("defaultfallbackintent-followup")) {
