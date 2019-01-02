@@ -55,7 +55,7 @@ router.get("/announce-return", function (req, res) {
       Accept: "application/json"
     },
     json: true,
-    json: {
+    body: {
       "Tags": ["return-announced"]
     },
     /*
