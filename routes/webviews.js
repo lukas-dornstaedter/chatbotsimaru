@@ -56,10 +56,12 @@ router.get("/announce-return", function (req, res) {
       Accept: "application/json"
     },
     json: true,
+    /*
     body: {
       "Tags": ["return-announced"]
     },
-    /*
+    */
+
     multipart: [
       {
         "content-type": "application/json",
@@ -68,14 +70,13 @@ router.get("/announce-return", function (req, res) {
         })
       }
     ],
-   */
+
     function(error, response, body) {
       res.json([]);
       console.log(body);
-      if (response.statusCode == 201) {
-        console.log("ok");
-      } else {
+      if (error) {
         console.log("error: " + response.statusCode);
+      } else {
         console.log(body);
       }
     }
