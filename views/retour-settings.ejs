@@ -1,107 +1,92 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Simaru - Retourenmanagement</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta
-      name="viewport"
-      content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
-    />
-    <!-- Compiled and minified CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-    <div class="container">
-      <h1 style="font-size: 28px;">Rücksendung Ankündigen</h1>
-      <div class="row">
-        <div class="input-field col s12" id="item-checkboxes"></div>
-      </div>
-      <form id="retoure-form">
-        <div class="row">
-          <div class="input-field col s12">
-            <input
-              placeholder="gib uns die Chance noch besser zu werden"
-              id="first_name"
-              type="text"
-              class="validate"
-            />
-            <label for="retour_reason">Rücksendegrund</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <button
-              class="btn waves-effect waves-light"
-              type="submit"
-              name="action"
-              id="returnsubmit"
-            >
-              Submit <i class="material-icons right"></i>
-            </button>
-          </div>
-        </div>
-      </form>
+<head>
+  <title>Simaru - Retourenmanagement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 style="font-size: 28px;">Rücksendung Ankündigen</h1>
+    <div class="row">
+      <div class="input-field col s12" id="item-checkboxes"></div>
     </div>
-    <script>
-      (function(d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "Messenger");
-      window.extAsyncInit = function() {
-        // the Messenger Exstensions JS SDK is done loading
-        console.log("hallo hallo");
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        if (url.searchParams.get("orderid") != null) {
-          var orderID = url.searchParams.get("orderid");
-          console.log(orderID);
-        }
-        $.getJSON("/webviews/settings?orderid=" + orderID, function(data) {
-          console.log("hallo wie geht es dir :-)");
-          console.log(data);
-          data.forEach(element => {
-            let i = document.createElement("div");
-            i.innerHTML = `<label>
+    <form id="retoure-form">
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="gib uns die Chance noch besser zu werden" id="first_name" type="text" class="validate" />
+          <label for="retour_reason">Rücksendegrund</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <button class="btn waves-effect waves-light" type="submit" name="action" id="returnsubmit">
+            Submit
+            <i class="material-icons right"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script>
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "Messenger");
+    window.extAsyncInit = function () {
+      // the Messenger Exstensions JS SDK is done loading
+      bOrderID = null;
+      console.log("hallo hallo");
+      var url_string = window.location.href;
+      var url = new URL(url_string);
+      if (url.searchParams.get("orderid") != null) {
+        var orderID = url.searchParams.get("orderid");
+        console.log(orderID);
+      }
+      $.getJSON("/webviews/settings?orderid=" + orderID, function (data) {
+        console.log("hallo wie geht es dir :-)");
+        console.log(data);
+        bOrderID = data.bOrderID;
+        console.log(bOrderID);
+        data.items.forEach(element => {
+          let i = document.createElement("div");
+          i.innerHTML = `<label>
         <input id="${element.TransactionId}" type="checkbox" />
         <span>${element.Product.Title}</span>
       </label>`;
-            console.log(i);
-            document.getElementById("item-checkboxes").appendChild(i);
-          });
+          console.log(i);
+          document.getElementById("item-checkboxes").appendChild(i);
         });
-      };
+      });
+    };
 
-      document
-        .getElementById("returnsubmit")
-        .addEventListener("click", function() {
-          console.log("hallo der button");
-          $.get("/webviews/announce-return", function(data, status) {
-            //alert("Data: " + data + "\nStatus: " + status);
-          });
-          event.preventDefault();
+    document
+      .getElementById("returnsubmit")
+      .addEventListener("click", function () {
+        console.log("hallo der button");
+        $.get("/webviews/announce-return?borderid=" + bOrderID, function (data, status) {
+          //alert("Data: " + data + "\nStatus: " + status);
         });
-    </script>
-  </body>
+        event.preventDefault();
+      });
+  </script>
+</body>
+
 </html>

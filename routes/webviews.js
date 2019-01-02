@@ -31,7 +31,11 @@ router.get("/settings", function (req, res) {
       //console.log(body.Data);
       let data = JSON.parse(body);
       let items = data.Data.OrderItems;
-      res.json(items);
+      let returninfo = {
+        items: data.Data.OrderItems,
+        bOrderID: data.Data.BillBeeOrderId
+      }
+      res.json(returninfo);
     }
   );
   //let response = `Newsletter wie geht es dir`;
@@ -39,12 +43,13 @@ router.get("/settings", function (req, res) {
 });
 
 router.get("/announce-return", function (req, res) {
+  var bOrderID = req.query.borderid;
   console.log("announced-return");
 
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
-    url = "https://app.billbee.io/api/v1/orders/54765571/tags",
+    url = `https://app.billbee.io/api/v1/orders/${bOrderID}/tags`,
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
 
