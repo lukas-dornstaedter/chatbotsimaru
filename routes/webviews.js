@@ -82,6 +82,7 @@ router.get("/announce-return", function (req, res) {
   });
   */
   console.log("request finished");
+  res.json([]);
 });
 
 module.exports = router;
