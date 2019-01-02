@@ -49,6 +49,7 @@
               class="btn waves-effect waves-light"
               type="submit"
               name="action"
+              id="returnsubmit"
             >
               Submit <i class="material-icons right"></i>
             </button>
@@ -91,6 +92,15 @@
           });
         });
       };
+
+      document
+        .getElementById("returnsubmit")
+        .addEventListener("click", function() {
+          console.log("hallo");
+          //$.get("demo_test.asp", function(data, status){
+          //alert("Data: " + data + "\nStatus: " + status);
+          //});
+        });
     </script>
   </body>
 </html>
