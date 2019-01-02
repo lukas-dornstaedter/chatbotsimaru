@@ -55,13 +55,17 @@ router.get("/announce-return", function (req, res) {
       "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
       Accept: "application/json"
     },
-    json: true,
+    json: {
+      "Tags": [
+        "return-announced"
+      ]
+    },
     /*
+    json: true,
+    
     body: {
       "Tags": ["return-announced"]
     },
-    */
-
     multipart: [
       {
         "content-type": "application/json",
@@ -70,14 +74,14 @@ router.get("/announce-return", function (req, res) {
         })
       }
     ],
-
+    */
     function(error, response, body) {
-      res.json([]);
-      console.log(body);
       if (error) {
         console.log("error: " + response.statusCode);
       } else {
+        response.json([]);
         console.log(body);
+        res.json([]);
       }
     }
   });
