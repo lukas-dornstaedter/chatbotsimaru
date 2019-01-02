@@ -48,9 +48,8 @@ router.get("/announce-return", function (req, res) {
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
 
-  request({
+  request.post({
     url: url,
-    methode: "POST",
     headers: {
       Authorization: auth,
       "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
@@ -61,18 +60,15 @@ router.get("/announce-return", function (req, res) {
         "return-announced"
       ]
     },
-    json: true,
-
-    function(error, response, body) {
-      if (error) {
-        console.log("error: " + response.statusCode);
-      } else {
-        console.log(body);
-        response.json([]);
+    json: true
+  },
+    function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log(body)
       }
-    }
+    });
 
-  });
+  //});
 
   console.log("request finished");
   res.json([]);
