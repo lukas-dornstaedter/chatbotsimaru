@@ -39,6 +39,7 @@ router.get("/settings", function(req, res) {
 });
 
 router.get("/announce-return", function(req, res) {
+  console.log("announced-return");
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
