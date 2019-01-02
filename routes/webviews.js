@@ -64,8 +64,7 @@ router.get("/announce-return", function(req, res) {
     ],
 
     function(error, response, body) {
-      // Do more stuff with 'body' here
-      //console.log(body.Data);
+      console.log(body);
       if (response.statusCode == 201) {
         console.log("ok");
       } else {
