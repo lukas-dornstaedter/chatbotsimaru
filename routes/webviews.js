@@ -46,6 +46,7 @@ router.get("/announce-return", function (req, res) {
     url = "https://app.billbee.io/api/v1/orders/54765571/tags",
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
+  /*
   request({
     url: url,
     methode: "POST",
@@ -67,7 +68,7 @@ router.get("/announce-return", function (req, res) {
         })
       }
     ],
-    */
+   
     function(error, response, body) {
       res.json([]);
       console.log(body);
@@ -79,6 +80,8 @@ router.get("/announce-return", function (req, res) {
       }
     }
   });
+  */
+  console.log("request finished");
 });
 
 module.exports = router;
