@@ -40,6 +40,7 @@ router.get("/settings", function (req, res) {
 
 router.get("/announce-return", function (req, res) {
   console.log("announced-return");
+
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
@@ -55,35 +56,22 @@ router.get("/announce-return", function (req, res) {
       "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
       Accept: "application/json"
     },
-    json: {
+    body: {
       "Tags": [
         "return-announced"
       ]
     },
-    /*
     json: true,
-    
-    body: {
-      "Tags": ["return-announced"]
-    },
-    multipart: [
-      {
-        "content-type": "application/json",
-        body: JSON.stringify({
-          Tags: ["return-announced"]
-        })
-      }
-    ],
-    */
+
     function(error, response, body) {
       if (error) {
         console.log("error: " + response.statusCode);
       } else {
-        response.json([]);
         console.log(body);
-        res.json([]);
+        response.json([]);
       }
     }
+
   });
 
   console.log("request finished");
