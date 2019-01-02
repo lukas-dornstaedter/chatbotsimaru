@@ -5,11 +5,11 @@ const express = require("express");
 
 const router = express.Router();
 
-router.get("/webview", function(req, res) {
+router.get("/webview", function (req, res) {
   res.render("retour-settings");
 });
 
-router.get("/settings", function(req, res) {
+router.get("/settings", function (req, res) {
   var orderID = req.query.orderid;
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
@@ -26,7 +26,7 @@ router.get("/settings", function(req, res) {
         Accept: "application/json"
       }
     },
-    function(error, response, body) {
+    function (error, response, body) {
       // Do more stuff with 'body' here
       //console.log(body.Data);
       let data = JSON.parse(body);
@@ -38,7 +38,7 @@ router.get("/settings", function(req, res) {
   //res.json([]);
 });
 
-router.get("/announce-return", function(req, res) {
+router.get("/announce-return", function (req, res) {
   console.log("announced-return");
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
@@ -55,8 +55,8 @@ router.get("/announce-return", function(req, res) {
       Accept: "application/json"
     },
     json: true,
-    body: {
-      Tags: ["return-announced"]
+    json: {
+      "Tags": ["return-announced"]
     },
     /*
     multipart: [
