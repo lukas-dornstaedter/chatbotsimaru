@@ -54,6 +54,11 @@ router.get("/announce-return", function(req, res) {
       "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
       Accept: "application/json"
     },
+    json: true,
+    body: {
+      Tags: ["return-announced"]
+    },
+    /*
     multipart: [
       {
         "content-type": "application/json",
@@ -62,7 +67,7 @@ router.get("/announce-return", function(req, res) {
         })
       }
     ],
-
+    */
     function(error, response, body) {
       console.log(body);
       if (response.statusCode == 201) {
