@@ -88,7 +88,7 @@
       .addEventListener("click", function () {
         let retourReason = document.getElementById("retour-reason").value;
         console.log(retourReason);
-        let productItems = document.getElementById("item-checkboxes").childNodes;
+        let productItems = document.getElementById("item-checkboxes").childNodes.childNodes;
         let productItemIDs = [];
         productItems.forEach(function (element) {
           productItemIDs.push(element.childNodes[1].id);
