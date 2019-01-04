@@ -31,7 +31,7 @@
       <div class="row">
         <div class="input-field col s12">
           <button class="btn waves-effect waves-light" type="submit" name="action" id="returnsubmit">
-            Submit
+            Retour ankündigen
             <i class="material-icons right"></i>
           </button>
         </div>
@@ -66,8 +66,10 @@
         console.log(bOrderID);
         data.items.forEach(element => {
           let i = document.createElement("div");
-          i.innerHTML = `<label>
+          let i = document.getElementById("item-checkboxes");
+          i.innerHTML += `
         <input id="${element.BillbeeId}" type="checkbox" />
+        <label>
         <span>${element.Product.SKU}: ${element.Product.Title}</span>
       </label>`;
           console.log(i);
@@ -81,6 +83,7 @@
       .addEventListener("click", function () {
         let retourReason = document.getElementById("retour-reason").value;
         console.log(retourReason);
+        console.log(document.getElementById("item-checkboxes").childNodes);
         /*
         $.get("/webviews/announce-return?borderid=" + bOrderID, function (data, status) {
           //alert("Data: " + data + "\nStatus: " + status);
