@@ -72,10 +72,10 @@
           //i = document.getElementById("item-checkboxes");
           //let i = document.createElement("label");
 
-          i.innerHTML += `
+          i.innerHTML += `<label>
         <input id="${element.BillbeeId}" type="checkbox" />
         <span>${element.Product.SKU}: ${element.Product.Title}</span>
-      `;
+      </label>`;
 
 
           document.getElementById("item-checkboxes").appendChild(i);
