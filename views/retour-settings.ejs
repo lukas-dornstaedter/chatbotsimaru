@@ -66,6 +66,7 @@
         console.log(bOrderID);
 
         let i = document.createElement("div");
+        i.id = "orderPositions";
 
         data.items.forEach(element => {
           //let i = document.createElement("div");
@@ -88,7 +89,7 @@
       .addEventListener("click", function () {
         let retourReason = document.getElementById("retour-reason").value;
         console.log(retourReason);
-        let productItems = document.getElementById("item-checkboxes").childNodes.childNodes;
+        let productItems = document.getElementById("orderPositions").childNodes;
         let productItemIDs = [];
         productItems.forEach(function (element) {
           productItemIDs.push(element.childNodes[1].id);
