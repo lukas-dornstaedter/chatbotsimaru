@@ -74,7 +74,7 @@
           //let i = document.createElement("label");
 
           i.innerHTML += `<label>
-        <input id="${element.BillbeeId}" type="checkbox" />
+        <input id="${element.BillbeeId}" sku="${element.Product.SKU}" type="checkbox" />
         <span>${element.Product.SKU}: ${element.Product.Title}</span>
       </label>`;
 
@@ -91,12 +91,15 @@
         console.log(retourReason);
         let productItems = document.getElementById("orderPositions").childNodes;
         let productItemIDs = [];
+        let productItemSKUs = [];
         productItems.forEach(function (element) {
           if (element.childNodes[1].checked) {
             productItemIDs.push(element.childNodes[1].id);
+            productItemSKUs.push(element.childNodes[1].getAttribute("sku"));
           }
         });
         console.log(productItemIDs);
+        console.log(productItemSKUs);
         /*
         $.get("/webviews/announce-return?borderid=" + bOrderID, function (data, status) {
           //alert("Data: " + data + "\nStatus: " + status);
