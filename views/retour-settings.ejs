@@ -92,7 +92,9 @@
         let productItems = document.getElementById("orderPositions").childNodes;
         let productItemIDs = [];
         productItems.forEach(function (element) {
-          productItemIDs.push(element.childNodes[1].id);
+          if (element.childNodes[1].checked) {
+            productItemIDs.push(element.childNodes[1].id);
+          }
         });
         console.log(productItemIDs);
         /*
