@@ -43,8 +43,12 @@ router.get("/settings", function (req, res) {
 });
 
 router.get("/announce-return", function (req, res) {
-  var bOrderID = req.query.borderid;
-  console.log("announced-return");
+  let bOrderID = req.query.borderid;
+  let retourReason = req.query.retourreason;
+  let retourSKUS = decodeURIComponent(JSON.parse(req.query.retourskus));
+  console.log(`orderID: ${bOrderID}`);
+  console.log(`retourReason: ${retourReason}`);
+  console.log(`retourSKUS: ${retourSKUS}`);
 
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
