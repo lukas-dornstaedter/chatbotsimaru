@@ -83,7 +83,7 @@ router.get("/announce-return", function (req, res) {
   const msg = {
     to: "support@simaru.zohodesk.eu",
     from: `info@simaru.de`,
-    subject: `Retour Ankündigung: bOrderID`,
+    subject: `Retour Ankündigung: ${bOrderID}`,
     text: customerMessage,
     html: `<strong>${customerMessage}</strong>`
   };
