@@ -2,6 +2,7 @@
 
 const config = require("../config");
 const express = require("express");
+const sgMail = require("@sendgrid/mail");
 
 const router = express.Router();
 
@@ -78,6 +79,15 @@ router.get("/announce-return", function (req, res) {
     });
 
   //});
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  const msg = {
+    to: "support@simaru.zohodesk.eu",
+    from: `info@simaru.de`,
+    subject: `Retour Ankündigung: bOrderID`,
+    text: `Retour Artikel: ${retourSKUS}, Retour Grund: ${retourReason}`,
+    html: `<strong>${customerMessage}</strong>`
+  };
+  sgMail.send(msg);
 
   console.log("request finished");
   res.json([]);
