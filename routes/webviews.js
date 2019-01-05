@@ -78,18 +78,18 @@ router.get("/announce-return", function (req, res) {
       }
     });
 
-  //});
+  let customerMessage = `Retour Artikel: ${retourSKUS}, Retour Grund: ${retourReason}`;
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const msg = {
     to: "support@simaru.zohodesk.eu",
     from: `info@simaru.de`,
     subject: `Retour Ankündigung: bOrderID`,
-    text: `Retour Artikel: ${retourSKUS}, Retour Grund: ${retourReason}`,
+    text: customerMessage,
     html: `<strong>${customerMessage}</strong>`
   };
   sgMail.send(msg);
 
-  console.log("request finished");
+  console.log("Nachricht gesendet...");
   res.json([]);
 });
 
