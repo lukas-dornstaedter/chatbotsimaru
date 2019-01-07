@@ -46,10 +46,12 @@ router.get("/settings", function(req, res) {
 
 router.get("/announce-return", function(req, res) {
   let body = req.query;
-  console.log(body.psid);
+
   let bOrderID = req.query.borderid;
   let retourReason = req.query.retourreason;
   let retourSKUS = decodeURIComponent(JSON.parse(req.query.retourskus));
+  console.log(body);
+  console.log(`UID: ${body.psid}`);
   console.log(`orderID: ${bOrderID}`);
   console.log(`retourReason: ${retourReason}`);
   console.log(`retourSKUS: ${retourSKUS}`);
