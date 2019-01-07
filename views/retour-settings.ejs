@@ -135,9 +135,11 @@
           console.log(productItemSKUs);
 
           $.get(
-            `/webviews/announce-return?borderid=${bOrderID}&retourreason=${retourReason}&retourskus=${encodeURIComponent(
+            `/webviews/announce-return?borderid=${bOrderID}&retourreason=${retourReason}&psid=${
+              document.getElementById("psid").value
+            }&retourskus=${encodeURIComponent(
               JSON.stringify(productItemSKUs)
-            )}$psid=${document.getElementById("psid").value}`,
+            )}`,
             function(data, status) {
               //alert("Data: " + data + "\nStatus: " + status);
             }
