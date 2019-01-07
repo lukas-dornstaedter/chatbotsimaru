@@ -105,6 +105,12 @@
           //alert("Data: " + data + "\nStatus: " + status);
         });
 
+        MessengerExtensions.requestCloseBrowser(function success() {
+                // webview closed
+            }, function error(err) {
+                // an error occured
+            });
+
         event.preventDefault();
       });
   </script>

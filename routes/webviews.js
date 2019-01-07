@@ -6,11 +6,11 @@ const sgMail = require("@sendgrid/mail");
 
 const router = express.Router();
 
-router.get("/webview", function (req, res) {
+router.get("/webview", function(req, res) {
   res.render("retour-settings");
 });
 
-router.get("/settings", function (req, res) {
+router.get("/settings", function(req, res) {
   var orderID = req.query.orderid;
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
@@ -27,7 +27,7 @@ router.get("/settings", function (req, res) {
         Accept: "application/json"
       }
     },
-    function (error, response, body) {
+    function(error, response, body) {
       // Do more stuff with 'body' here
       //console.log(body.Data);
       let data = JSON.parse(body);
@@ -35,7 +35,7 @@ router.get("/settings", function (req, res) {
       let returninfo = {
         items: data.Data.OrderItems,
         bOrderID: data.Data.BillBeeOrderId
-      }
+      };
       res.json(returninfo);
     }
   );
@@ -43,7 +43,7 @@ router.get("/settings", function (req, res) {
   //res.json([]);
 });
 
-router.get("/announce-return", function (req, res) {
+router.get("/announce-return", function(req, res) {
   let bOrderID = req.query.borderid;
   let retourReason = req.query.retourreason;
   let retourSKUS = decodeURIComponent(JSON.parse(req.query.retourskus));
@@ -57,26 +57,25 @@ router.get("/announce-return", function (req, res) {
     url = `https://app.billbee.io/api/v1/orders/${bOrderID}/tags`,
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
-
-  request.post({
-    url: url,
-    headers: {
-      Authorization: auth,
-      "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
-      Accept: "application/json"
+  request.post(
+    {
+      url: url,
+      headers: {
+        Authorization: auth,
+        "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+        Accept: "application/json"
+      },
+      body: {
+        Tags: ["return-announced"]
+      },
+      json: true
     },
-    body: {
-      "Tags": [
-        "return-announced"
-      ]
-    },
-    json: true
-  },
-    function (error, response, body) {
+    function(error, response, body) {
       if (!error && response.statusCode == 200) {
-        console.log(body)
+        console.log(body);
       }
-    });
+    }
+  );
 
   let customerMessage = `Retour Artikel: ${retourSKUS}, Retour Grund: ${retourReason}`;
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -87,6 +86,7 @@ router.get("/announce-return", function (req, res) {
     text: customerMessage,
     html: `<strong>${customerMessage}</strong>`
   };
+
   sgMail.send(msg);
 
   console.log("Nachricht gesendet...");
