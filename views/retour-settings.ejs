@@ -76,6 +76,7 @@
           "273117870027761",
           function success(thread_context) {
             document.getElementById("psid").value = thread_context.psid;
+            console.log(thread_context.psid);
           },
           function error(err) {
             // error
