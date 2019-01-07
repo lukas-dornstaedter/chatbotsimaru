@@ -33,6 +33,7 @@
         <div class="input-field col s12" id="item-checkboxes"></div>
       </div>
       <form id="retoure-form">
+        <input type="hidden" name="psid" />
         <div class="row">
           <div class="input-field col s12">
             <input
@@ -71,6 +72,16 @@
         fjs.parentNode.insertBefore(js, fjs);
       })(document, "script", "Messenger");
       window.extAsyncInit = function() {
+        MessengerExtensions.getContext(
+          "273117870027761",
+          function success(thread_context) {
+            document.getElementById("psid").value = thread_context.psid;
+          },
+          function error(err) {
+            // error
+          }
+        );
+
         // the Messenger Exstensions JS SDK is done loading
         bOrderID = null;
         console.log("hallo hallo");
