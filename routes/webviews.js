@@ -45,13 +45,14 @@ router.get("/settings", function(req, res) {
 });
 
 router.get("/announce-return", function(req, res) {
-  let body = req.query;
+  //let body = req.query;
 
   let bOrderID = req.query.borderid;
   let retourReason = req.query.retourreason;
+  let psid = req.query.psid;
   let retourSKUS = decodeURIComponent(JSON.parse(req.query.retourskus));
-  console.log(body);
-  console.log(`UID: ${body.psid}`);
+
+  console.log(`UID: ${psid}`);
   console.log(`orderID: ${bOrderID}`);
   console.log(`retourReason: ${retourReason}`);
   console.log(`retourSKUS: ${retourSKUS}`);
@@ -106,7 +107,7 @@ router.get("/announce-return", function(req, res) {
 
   console.log("Nachricht gesendet...");
   fbservice.sendTextMessage(
-    body.psid,
+    psid,
     `Vielen Dank für die Ankündigung der Retour folgender Artikel: ${retourSKUS}`
   );
   res.json([]);

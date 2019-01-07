@@ -137,7 +137,7 @@
           $.get(
             `/webviews/announce-return?borderid=${bOrderID}&retourreason=${retourReason}&retourskus=${encodeURIComponent(
               JSON.stringify(productItemSKUs)
-            )}`,
+            )}$psid=${document.getElementById("psid").value}`,
             function(data, status) {
               //alert("Data: " + data + "\nStatus: " + status);
             }
