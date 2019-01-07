@@ -85,10 +85,11 @@ router.get("/announce-return", function(req, res) {
     subject: `Retour Ankündigung: ${bOrderID}`,
     templateId: "d-01e73572b69f4c2fb7222c392b931661",
     substitutionWrappers: ["{{", "}}"],
-    substitutions: {
+    dynamic_template_data: {
       bOrderID: bOrderID,
       retourSKUS: retourSKUS,
-      retourReason: retourReason
+      retourReason: retourReason,
+      subject: `Retour Ankündigung: ${bOrderID}`
     }
     /*
     text: customerMessage,
