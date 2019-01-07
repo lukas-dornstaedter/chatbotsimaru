@@ -83,8 +83,17 @@ router.get("/announce-return", function(req, res) {
     to: "support@simaru.zohodesk.eu",
     from: `info@simaru.de`,
     subject: `Retour Ankündigung: ${bOrderID}`,
+    templateId: "d-01e73572b69f4c2fb7222c392b931661",
+    substitutionWrappers: ["{{", "}}"],
+    substitutions: {
+      bOrderID: bOrderID,
+      retourSKUS: retourSKUS,
+      retourReason: retourReason
+    }
+    /*
     text: customerMessage,
     html: `<strong>${customerMessage}</strong>`
+    */
   };
 
   sgMail.send(msg);
