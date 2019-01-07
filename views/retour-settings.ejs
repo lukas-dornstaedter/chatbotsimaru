@@ -128,16 +128,19 @@
             )}`,
             function(data, status) {
               //alert("Data: " + data + "\nStatus: " + status);
-              MessengerExtensions.requestCloseBrowser(
-                function success() {
-                  // webview closed
-                },
-                function error(err) {
-                  // an error occured
-                }
-              );
             }
           );
+
+          setTimeout(function() {
+            MessengerExtensions.requestCloseBrowser(
+              function success() {
+                // webview closed
+              },
+              function error(err) {
+                // an error occured
+              }
+            );
+          }, 1000);
 
           event.preventDefault();
         });
