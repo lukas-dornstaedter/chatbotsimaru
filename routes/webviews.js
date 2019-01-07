@@ -46,6 +46,7 @@ router.get("/settings", function(req, res) {
 
 router.get("/announce-return", function(req, res) {
   let body = req.query;
+  console.log(body.psid);
   let bOrderID = req.query.borderid;
   let retourReason = req.query.retourreason;
   let retourSKUS = decodeURIComponent(JSON.parse(req.query.retourskus));
