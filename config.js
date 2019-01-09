@@ -10,5 +10,7 @@ module.exports = {
   FB_APP_ID: process.env.FB_APP_ID,
   BILLBEE_USERNAME: process.env.BILLBEE_USERNAME,
   BILLBEE_PASS: process.env.BILLBEE_PASS,
-  BILLBEE_API_KEY: process.env.BILLBEE_API_KEY
+  BILLBEE_API_KEY: process.env.BILLBEE_API_KEY,
+  CONSUMER_KEY: process.env.consumerKey,
+  CONSUMER_SECRET: process.env.consumerSecret
 };

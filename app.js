@@ -11,6 +11,7 @@ const uuid = require("uuid");
 const sgMail = require("@sendgrid/mail");
 
 const webviews = require("./routes/webviews");
+const updatestock = require("./updatestock.js");
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -74,7 +75,7 @@ const sessionClient = new dialogflow.SessionsClient({
 const sessionIds = new Map();
 
 // Index route
-app.get("/", function (req, res) {
+app.get("/", function(req, res) {
   res.send("Hello world, I am a chat bot");
 });
 
@@ -82,8 +83,10 @@ app.set("view engine", "ejs");
 
 app.use("/webviews", webviews);
 
+app.use("/updatestock", updatestock);
+
 // for Facebook verification
-app.get("/webhook/", function (req, res) {
+app.get("/webhook/", function(req, res) {
   console.log("request");
   if (
     req.query["hub.mode"] === "subscribe" &&
@@ -103,7 +106,7 @@ app.get("/webhook/", function (req, res) {
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
-app.post("/webhook/", function (req, res) {
+app.post("/webhook/", function(req, res) {
   var data = req.body;
   console.log(JSON.stringify(data));
 
@@ -111,12 +114,12 @@ app.post("/webhook/", function (req, res) {
   if (data.object == "page") {
     // Iterate over each entry
     // There may be multiple if batched
-    data.entry.forEach(function (pageEntry) {
+    data.entry.forEach(function(pageEntry) {
       var pageID = pageEntry.id;
       var timeOfEvent = pageEntry.time;
 
       // Iterate over each messaging event
-      pageEntry.messaging.forEach(function (messagingEvent) {
+      pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
         } else if (messagingEvent.message) {
@@ -225,7 +228,7 @@ function handleDialogFlowAction(
           let orderID = contexts[0].parameters.fields["orderID"].stringValue;
 
           //ask what user wants to do next
-          setTimeout(function () {
+          setTimeout(function() {
             let buttons = [
               {
                 title: "Settings",
@@ -253,12 +256,11 @@ function handleDialogFlowAction(
       if (contexts[0].name.includes("defaultfallbackintent-followup")) {
         if (isDefined(contexts[0].parameters.fields["customerName"])) {
           let customerName =
-            contexts[0].parameters.fields["customerName"].stringValue,
+              contexts[0].parameters.fields["customerName"].stringValue,
             customerEmail =
               contexts[0].parameters.fields["customerEmail"].stringValue,
             customerMessage =
               contexts[0].parameters.fields["customerMessage"].stringValue;
-
 
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           const msg = {
@@ -273,8 +275,8 @@ function handleDialogFlowAction(
           sendTextMessage(
             sender,
             "Danke " +
-            customerName +
-            "! Deine Nachricht wurde an einen Support Mitarbeiter weitergeleitet."
+              customerName +
+              "! Deine Nachricht wurde an einen Support Mitarbeiter weitergeleitet."
           );
         }
       } else {
@@ -294,7 +296,7 @@ function handleDialogFlowAction(
       ) {
         let jouput =
           isDefined(contexts[0].parameters.fields["orderNumber"]) &&
-            contexts[0].parameters.fields["orderNumber"] != ""
+          contexts[0].parameters.fields["orderNumber"] != ""
             ? contexts[0].parameters
             : "";
 
@@ -324,7 +326,7 @@ function handleDialogFlowAction(
                 Accept: "application/json"
               }
             },
-            function (error, response, body) {
+            function(error, response, body) {
               // Do more stuff with 'body' here
               //console.log(body.Data);
               let data = JSON.parse(body);
@@ -358,7 +360,7 @@ function handleDialogFlowAction(
                         sendTextMessage(
                           sender,
                           "Deine Bestellung wurde per DHL versendet. Du kannst die Bestellung unter folgendem Link verfolgen: https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
-                          trackingNumber
+                            trackingNumber
                         );
                       }
                     }
@@ -859,7 +861,7 @@ function callSendAPI(messageData) {
       method: "POST",
       json: messageData
     },
-    function (error, response, body) {
+    function(error, response, body) {
       if (!error && response.statusCode == 200) {
         var recipientId = body.recipient_id;
         var messageId = body.message_id;
@@ -987,7 +989,7 @@ function receivedAccountLink(event) {
 
   console.log(
     "Received account link event with for user %d with status %s " +
-    "and auth code %s ",
+      "and auth code %s ",
     senderID,
     status,
     authCode
@@ -1010,7 +1012,7 @@ function receivedDeliveryConfirmation(event) {
   var sequenceNumber = delivery.seq;
 
   if (messageIDs) {
-    messageIDs.forEach(function (messageID) {
+    messageIDs.forEach(function(messageID) {
       console.log(
         "Received delivery confirmation for message ID: %s",
         messageID
@@ -1043,7 +1045,7 @@ function receivedAuthentication(event) {
 
   console.log(
     "Received authentication for user %d and page %d with pass " +
-    "through param '%s' at %d",
+      "through param '%s' at %d",
     senderID,
     recipientID,
     passThroughParam,
@@ -1097,6 +1099,6 @@ function isDefined(obj) {
 }
 
 // Spin up the server
-app.listen(app.get("port"), function () {
+app.listen(app.get("port"), function() {
   console.log("running on port", app.get("port"));
 });
