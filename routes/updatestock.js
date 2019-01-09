@@ -5,6 +5,8 @@ const express = require("express");
 var WooCommerceAPI = require("woocommerce-api");
 var request = require("request");
 
+const router = express.Router();
+
 router.get("/updatestock", function(req, res) {
   var WooCommerce = new WooCommerceAPI({
     url: "https://simaru.de",
