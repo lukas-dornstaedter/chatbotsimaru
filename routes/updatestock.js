@@ -39,7 +39,7 @@ router.get("/updatestock", function(req, res) {
           //console.log(item.sku);
           //console.log(stockitem.sku);
           if (stockitem.sku == item.sku && stockitem.sku != "S-PV-04") {
-            console.log(item.sku);
+            console.log(`Update Stock: ${item.sku}`);
             if (stockitem.amazon > 1) {
               var data = {
                 stock_quantity: Number(stockitem.amazon)
@@ -62,4 +62,7 @@ router.get("/updatestock", function(req, res) {
       });
     });
   }
+  res.json([]);
 });
+
+module.exports = router;
