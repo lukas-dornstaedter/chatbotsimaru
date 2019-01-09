@@ -8,6 +8,10 @@ var request = require("request");
 const router = express.Router();
 
 router.get("/updatestock", function(req, res) {
+  res.render("retour-settings");
+});
+
+router.get("/update", function(req, res) {
   var WooCommerce = new WooCommerceAPI({
     url: "https://simaru.de",
     consumerKey: config.CONSUMER_KEY,
