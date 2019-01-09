@@ -11,7 +11,7 @@ const uuid = require("uuid");
 const sgMail = require("@sendgrid/mail");
 
 const webviews = require("./routes/webviews");
-const updatestock = require("./updatestock.js");
+const updatestock = require("./routes/updatestock.js");
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
