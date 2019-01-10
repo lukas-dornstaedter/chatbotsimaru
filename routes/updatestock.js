@@ -152,7 +152,7 @@ router.get("/neworder", function(req, res) {
           quantity: position.Quantity
         });
       });
-      getShippingPrev(billbeeIDs, shippingType => {
+      getShippingPrev(billbeeIDs).then(res => {
         var request = require("request"),
           username = config.BILLBEE_USERNAME,
           password = config.BILLBEE_PASS,
@@ -169,7 +169,7 @@ router.get("/neworder", function(req, res) {
               Accept: "application/json"
             },
             body: {
-              Tags: [shippingType]
+              Tags: [res]
             },
             json: true
           },
@@ -185,7 +185,7 @@ router.get("/neworder", function(req, res) {
   );
 });
 
-function getShippingPrev(positions, callback) {
+async function getShippingPrev(positions, callback) {
   let shippingType = null;
   positions.forEach(function(position) {
     console.log(position.id);
@@ -217,7 +217,7 @@ function getShippingPrev(positions, callback) {
           }
         }
 
-        callback(shippingType);
+        return shippingType;
 
         res.json([]);
       }
