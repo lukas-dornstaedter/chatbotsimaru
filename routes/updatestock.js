@@ -34,7 +34,7 @@ router.get("/update", function(req, res) {
   );
 
   for (let i = 1; i < 2; i++) {
-    WooCommerce.getAsync(`products?per_page=40&page=${i}`, function(
+    WooCommerce.getAsync(`products?per_page=15&page=${i}`).then(function(
       err,
       data,
       res
@@ -63,7 +63,7 @@ router.get("/update", function(req, res) {
               };
             }
 
-            WooCommerce.putAsync("products/" + item.id, data, function(
+            WooCommerce.putAsync("products/" + item.id, data).then(function(
               err,
               data,
               res
