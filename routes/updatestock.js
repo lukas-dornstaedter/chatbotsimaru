@@ -34,7 +34,11 @@ router.get("/update", function(req, res) {
   );
 
   for (let i = 1; i < 2; i++) {
-    WooCommerce.get(`products?per_page=40&page=${i}`, function(err, data, res) {
+    WooCommerce.getAsync(`products?per_page=5&page=${i}`, function(
+      err,
+      data,
+      res
+    ) {
       let products = JSON.parse(res);
       //console.log(products);
 
@@ -59,7 +63,7 @@ router.get("/update", function(req, res) {
               };
             }
 
-            WooCommerce.put("products/" + item.id, data, function(
+            WooCommerce.putAsync("products/" + item.id, data, function(
               err,
               data,
               res
@@ -67,7 +71,7 @@ router.get("/update", function(req, res) {
               //console.log(res);
             });
           } else {
-            console.log(`${item.sku} hat child Elemente`);
+            //console.log(`${item.sku} hat child Elemente`);
           }
           /*
           else if (item.variations.length > 0) {
