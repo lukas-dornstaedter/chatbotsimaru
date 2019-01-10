@@ -153,32 +153,32 @@ router.get("/neworder", function(req, res) {
         });
       });
       let test = getShippingPrev(billbeeIDs);
-        var request = require("request"),
-          username = config.BILLBEE_USERNAME,
-          password = config.BILLBEE_PASS,
-          url = `https://app.billbee.io/api/v1/orders/${bOrderID}/tags`,
-          auth =
-            "Basic " + new Buffer(username + ":" + password).toString("base64");
+      var request = require("request"),
+        username = config.BILLBEE_USERNAME,
+        password = config.BILLBEE_PASS,
+        url = `https://app.billbee.io/api/v1/orders/${bOrderID}/tags`,
+        auth =
+          "Basic " + new Buffer(username + ":" + password).toString("base64");
 
-        request.post(
-          {
-            url: url,
-            headers: {
-              Authorization: auth,
-              "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
-              Accept: "application/json"
-            },
-            body: {
-              Tags: [res]
-            },
-            json: true
+      request.post(
+        {
+          url: url,
+          headers: {
+            Authorization: auth,
+            "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+            Accept: "application/json"
           },
-          function(error, response, body) {
-            if (!error && response.statusCode == 200) {
-              console.log(body);
-            }
+          body: {
+            Tags: [res]
+          },
+          json: true
+        },
+        function(error, response, body) {
+          if (!error && response.statusCode == 200) {
+            console.log(body);
           }
-        );
+        }
+      );
 
       res.json([]);
     }
@@ -205,7 +205,7 @@ function getShippingPrev(positions) {
           Accept: "application/json"
         }
       },
-      await function(error, response, body) {
+      async function(error, response, body) {
         // Do more stuff with 'body' here
         console.log(body.Data);
         let data = JSON.parse(body);
@@ -216,8 +216,6 @@ function getShippingPrev(positions) {
             shippingType = "mixed";
           }
         }
-
-        
 
         const d = await response.json([]);
         return shippingType;
