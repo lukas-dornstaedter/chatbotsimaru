@@ -152,7 +152,7 @@ router.get("/neworder", function(req, res) {
           quantity: position.Quantity
         });
       });
-      getShippingPrev(billbeeIDs).then(res => {
+      let test = getShippingPrev(billbeeIDs);
         var request = require("request"),
           username = config.BILLBEE_USERNAME,
           password = config.BILLBEE_PASS,
@@ -179,13 +179,13 @@ router.get("/neworder", function(req, res) {
             }
           }
         );
-      });
+
       res.json([]);
     }
   );
 });
 
-async function getShippingPrev(positions, callback) {
+function getShippingPrev(positions) {
   let shippingType = null;
   positions.forEach(function(position) {
     console.log(position.id);
@@ -205,7 +205,7 @@ async function getShippingPrev(positions, callback) {
           Accept: "application/json"
         }
       },
-      function(error, response, body) {
+      await function(error, response, body) {
         // Do more stuff with 'body' here
         console.log(body.Data);
         let data = JSON.parse(body);
@@ -217,9 +217,10 @@ async function getShippingPrev(positions, callback) {
           }
         }
 
-        return shippingType;
+        
 
-        res.json([]);
+        const d = await response.json([]);
+        return shippingType;
       }
     );
   });
