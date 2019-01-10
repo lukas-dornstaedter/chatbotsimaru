@@ -207,7 +207,7 @@ function getShippingPrev(positions, callback) {
       },
       function(error, response, body) {
         // Do more stuff with 'body' here
-        //console.log(body.Data);
+        console.log(body.Data);
         let data = JSON.parse(body);
         if (data.Data.StockCurrent > position.quantity) {
           if (shippingType == "servant") {
