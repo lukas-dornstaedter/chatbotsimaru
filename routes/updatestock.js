@@ -121,4 +121,107 @@ router.get("/update", function(req, res) {
   res.json([]);
 });
 
+router.get("/neworder", function(req, res) {
+  let orderID = req.query.orderid;
+
+  var request = require("request"),
+    username = config.BILLBEE_USERNAME,
+    password = config.BILLBEE_PASS,
+    url = "https://app.billbee.io/api/v1/orders/findbyextref/" + orderID,
+    auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+
+  request(
+    {
+      url: url,
+      headers: {
+        Authorization: auth,
+        "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+        Accept: "application/json"
+      }
+    },
+    function(error, response, body) {
+      // Do more stuff with 'body' here
+      //console.log(body.Data);
+      let data = JSON.parse(body);
+      let items = data.Data.OrderItems;
+      let billbeeIDs = [];
+      let bOrderID = data.Data.BillBeeOrderId;
+      items.forEach(function(position) {
+        billbeeIDs.push({
+          id: position.Product.BillbeeId,
+          quantity: position.Quantity
+        });
+      });
+      getShippingPrev(billbeeIDs, function(shippingType) {
+        var request = require("request"),
+          username = config.BILLBEE_USERNAME,
+          password = config.BILLBEE_PASS,
+          url = `https://app.billbee.io/api/v1/orders/${bOrderID}/tags`,
+          auth =
+            "Basic " + new Buffer(username + ":" + password).toString("base64");
+
+        request.post(
+          {
+            url: url,
+            headers: {
+              Authorization: auth,
+              "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+              Accept: "application/json"
+            },
+            body: {
+              Tags: [shippingType]
+            },
+            json: true
+          },
+          function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+              console.log(body);
+            }
+          }
+        );
+      });
+      res.json([]);
+    }
+  );
+});
+
+function getShippingPrev(positions, callback) {
+  let shippingType = null;
+  positions.forEach(function(position) {
+    var request = require("request"),
+      username = config.BILLBEE_USERNAME,
+      password = config.BILLBEE_PASS,
+      url = "https://app.billbee.io/api/v1/products" + position.id,
+      auth =
+        "Basic " + new Buffer(username + ":" + password).toString("base64");
+
+    request(
+      {
+        url: url,
+        headers: {
+          Authorization: auth,
+          "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+          Accept: "application/json"
+        }
+      },
+      function(error, response, body) {
+        // Do more stuff with 'body' here
+        //console.log(body.Data);
+        let data = JSON.parse(body);
+        if (data.Data.StockCurrent > position.quantity) {
+          if (shippingType == "servant") {
+            shippingType = "servant";
+          } else if (shippingType == "amz") {
+            shippingType = "mixed";
+          }
+        }
+
+        callback(shippingType);
+
+        res.json([]);
+      }
+    );
+  });
+}
+
 module.exports = router;
