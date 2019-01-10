@@ -68,7 +68,7 @@ router.get("/update", function(req, res) {
               data,
               res
             ) {
-              //console.log(res);
+              console.log(res);
             });
           } else {
             //console.log(`${item.sku} hat child Elemente`);
