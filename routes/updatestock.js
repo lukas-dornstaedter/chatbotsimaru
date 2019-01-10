@@ -65,6 +65,8 @@ router.get("/update", function(req, res) {
             ) {
               //console.log(res);
             });
+          } else {
+            console.log(`${item.sku} hat child Elemente`);
           }
           /*
           else if (item.variations.length > 0) {
