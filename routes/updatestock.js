@@ -65,7 +65,9 @@ router.get("/update", function(req, res) {
             ) {
               //console.log(res);
             });
-          } else if (item.variations.length > 0) {
+          }
+          /*
+          else if (item.variations.length > 0) {
             let itemID = item.id;
             let childItems = null;
             childItems = item.variations;
@@ -101,6 +103,7 @@ router.get("/update", function(req, res) {
               });
             });
           }
+          */
         });
       });
     });
