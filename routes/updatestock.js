@@ -188,6 +188,7 @@ router.get("/neworder", function(req, res) {
 function getShippingPrev(positions, callback) {
   let shippingType = null;
   positions.forEach(function(position) {
+    console.log(position.id);
     var request = require("request"),
       username = config.BILLBEE_USERNAME,
       password = config.BILLBEE_PASS,
