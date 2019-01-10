@@ -152,7 +152,7 @@ router.get("/neworder", function(req, res) {
           quantity: position.Quantity
         });
       });
-      getShippingPrev(billbeeIDs, function(shippingType) {
+      getShippingPrev(billbeeIDs, shippingType => {
         var request = require("request"),
           username = config.BILLBEE_USERNAME,
           password = config.BILLBEE_PASS,
