@@ -42,7 +42,11 @@ router.get("/update", function(req, res) {
         dataelias.forEach(function(stockitem) {
           //console.log(item.sku);
           //console.log(stockitem.sku);
-          if (stockitem.sku == item.sku && stockitem.sku != "S-PV-04") {
+          if (
+            stockitem.sku == item.sku &&
+            stockitem.sku != "S-PV-04" &&
+            item.variations.length == 0
+          ) {
             console.log(`Update Stock: ${item.sku}`);
             if (stockitem.amazon > 1) {
               var data = {
@@ -60,6 +64,41 @@ router.get("/update", function(req, res) {
               res
             ) {
               //console.log(res);
+            });
+          } else if (item.variations.length > 0) {
+            let itemID = item.id;
+            let childItems = null;
+            childItems = item.variations;
+            console.log(childItems);
+            childItems.forEach(function(childItem) {
+              WooCommerce.get(`products/${childItem}`, function(
+                err,
+                data,
+                res
+              ) {
+                let childItemData = JSON.parse(res);
+                let childItemSKU = childItemData.sku;
+                dataelias.forEach(function(itemE) {
+                  if (childItemSKU == itemE.sku) {
+                    if (itemE.amazon > 1) {
+                      let newData = {
+                        stock_quantity: Number(itemE.amazon)
+                      };
+                    } else {
+                      let newData = {
+                        stock_quantity: 0
+                      };
+                    }
+                    WooCommerce.put(`products/${childItem}`, newData, function(
+                      err,
+                      data,
+                      res
+                    ) {
+                      //console.log(res);
+                    });
+                  }
+                });
+              });
             });
           }
         });
