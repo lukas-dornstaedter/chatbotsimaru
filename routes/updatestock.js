@@ -35,11 +35,14 @@ router.get("/update", function(req, res) {
 
   for (let i = 1; i < 2; i++) {
     WooCommerce.getAsync(`products?per_page=15&page=${i}`).then(function(
+      /*
       err,
       data,
       res
+      */
+      res
     ) {
-      let products = JSON.parse(res);
+      let products = JSON.parse(res.toJSON().body);
       //console.log(products);
 
       products.forEach(function(item) {
