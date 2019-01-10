@@ -33,7 +33,7 @@ router.get("/update", function(req, res) {
     }
   );
 
-  for (let i = 1; i < 5; i++) {
+  for (let i = 1; i < 2; i++) {
     WooCommerce.get(`products?per_page=40&page=${i}`, function(err, data, res) {
       let products = JSON.parse(res);
       //console.log(products);
@@ -42,10 +42,11 @@ router.get("/update", function(req, res) {
         dataelias.forEach(function(stockitem) {
           //console.log(item.sku);
           //console.log(stockitem.sku);
+          let childItems = item.variations;
           if (
             stockitem.sku == item.sku &&
             stockitem.sku != "S-PV-04" &&
-            item.variations.length == 0
+            childItems.length == 0
           ) {
             console.log(`Update Stock: ${item.sku}`);
             if (stockitem.amazon > 1) {
