@@ -148,7 +148,7 @@ router.get("/neworder", function(req, res) {
       //console.log(repos.Data[0].Id);
       //console.log(data);
       //console.log("---");
-      console.log(data);
+      //console.log(data);
       let items = data.Data;
       console.log(items);
       items.forEach(function(product) {
