@@ -156,8 +156,10 @@ router.get("/neworder", function(req, res) {
       // API call failed...
     })
     .finally(function() {
+      console.log(billbeeStocks);
       console.log("ready...");
     });
+  res.json([]);
 
   /*
   var request = require("request"),
