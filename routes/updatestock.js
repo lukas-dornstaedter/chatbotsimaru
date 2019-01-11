@@ -74,7 +74,7 @@ router.get("/update", function(req, res) {
               //console.log(res);
             });
           } else {
-            console.log(`${item.sku} hat child Elemente`);
+            //console.log(`${item.sku} hat child Elemente`);
           }
           /*
           else if (item.variations.length > 0) {
@@ -124,10 +124,12 @@ router.get("/update", function(req, res) {
 router.get("/neworder", function(req, res) {
   let orderID = req.query.orderid;
 
+  let billbeeStocks = [];
+
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
-    url = "https://app.billbee.io/api/v1/orders/findbyextref/" + orderID,
+    url = `https://app.billbee.io/api/v1/products?pageSize=10&page=1`,
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
   request(
@@ -140,88 +142,16 @@ router.get("/neworder", function(req, res) {
       }
     },
     function(error, response, body) {
-      // Do more stuff with 'body' here
-      //console.log(body.Data);
-      let data = JSON.parse(body);
-      let items = data.Data.OrderItems;
-      let billbeeIDs = [];
-      let bOrderID = data.Data.BillBeeOrderId;
-      items.forEach(function(position) {
-        billbeeIDs.push({
-          id: position.Product.BillbeeId,
-          quantity: position.Quantity
+      let billRes = JSON.parse(body.Data);
+      billRes.forEach(function(product) {
+        billbeeStocks.push({
+          sku: product.SKU,
+          stock: product.StockCurrent
         });
       });
-      let test = getShippingPrev(billbeeIDs);
-      var request = require("request"),
-        username = config.BILLBEE_USERNAME,
-        password = config.BILLBEE_PASS,
-        url = `https://app.billbee.io/api/v1/orders/${bOrderID}/tags`,
-        auth =
-          "Basic " + new Buffer(username + ":" + password).toString("base64");
-
-      request.post(
-        {
-          url: url,
-          headers: {
-            Authorization: auth,
-            "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
-            Accept: "application/json"
-          },
-          body: {
-            Tags: [res]
-          },
-          json: true
-        },
-        function(error, response, body) {
-          if (!error && response.statusCode == 200) {
-            console.log(body);
-          }
-        }
-      );
-
-      res.json([]);
+      console.log(billbeeStocks);
     }
   );
 });
-
-function getShippingPrev(positions) {
-  let shippingType = null;
-  positions.forEach(function(position) {
-    console.log(position.id);
-    var request = require("request"),
-      username = config.BILLBEE_USERNAME,
-      password = config.BILLBEE_PASS,
-      url = "https://app.billbee.io/api/v1/products" + position.id,
-      auth =
-        "Basic " + new Buffer(username + ":" + password).toString("base64");
-
-    request(
-      {
-        url: url,
-        headers: {
-          Authorization: auth,
-          "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
-          Accept: "application/json"
-        }
-      },
-      async function(error, response, body) {
-        // Do more stuff with 'body' here
-        console.log(body.Data);
-        let data = JSON.parse(body);
-        if (data.Data.StockCurrent > position.quantity) {
-          if (shippingType == "servant") {
-            shippingType = "servant";
-          } else if (shippingType == "amz") {
-            shippingType = "mixed";
-          }
-        }
-
-        const d = await response.json([]);
-        return shippingType;
-      }
-    );
-  });
-}
 
 module.exports = router;
