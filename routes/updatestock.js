@@ -150,7 +150,7 @@ router.get("/neworder", function(req, res) {
       //console.log("---");
       //console.log(data);
       let items = data.Data;
-      console.log(items);
+      //console.log(items);
       items.forEach(function(product) {
         billbeeStocks.push({
           sku: product.SKU,
