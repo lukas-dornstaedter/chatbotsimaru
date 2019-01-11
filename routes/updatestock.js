@@ -144,8 +144,8 @@ router.get("/neworder", function(req, res) {
     .then(function(repos) {
       //console.log('User has %d repos', repos.length);
       //console.log(repos);
-      //let data = JSON.parse(repos);
-      let items = respos.Data;
+      let data = JSON.parse(repos);
+      let items = data.Data;
       console.log(items);
       items.forEach(function(product) {
         billbeeStocks.push({
