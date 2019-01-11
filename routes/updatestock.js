@@ -142,8 +142,9 @@ router.get("/neworder", function(req, res) {
       }
     },
     function(error, response, body) {
-      let billRes = JSON.parse(body.Data);
-      billRes.forEach(function(product) {
+      let data = JSON.parse(body);
+      let items = data.Data;
+      items.forEach(function(product) {
         billbeeStocks.push({
           sku: product.SKU,
           stock: product.StockCurrent
