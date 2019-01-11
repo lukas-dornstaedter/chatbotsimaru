@@ -128,7 +128,7 @@ router.get("/neworder", function(req, res) {
   let billbeeStocks = [];
   var username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
-    url = `https://app.billbee.io/api/v1/products?pageSize=10&page=1`,
+    url = `https://app.billbee.io/api/v1/products?pageSize=200&page=1`,
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
   var options = {
     uri: "https://app.billbee.io/api/v1/products?pageSize=10&page=1",
