@@ -143,7 +143,7 @@ router.get("/neworder", function(req, res) {
   rp(options)
     .then(function(repos) {
       //console.log('User has %d repos', repos.length);
-      console.log(repos);
+      console.log(repos[1]);
       let data = JSON.parse(repos.body);
       //console.log(repos.Data[0].Id);
       //console.log(data);
