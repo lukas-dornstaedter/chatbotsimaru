@@ -154,6 +154,7 @@ router.get("/neworder", function(req, res) {
       res.json([]);
     }
   );
+  console.log("ready...");
 });
 
 module.exports = router;
