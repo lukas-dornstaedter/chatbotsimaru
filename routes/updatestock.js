@@ -141,10 +141,13 @@ router.get("/neworder", function(req, res) {
   };
 
   rp(options)
-    .then(function(repos) {
+    .then(function(body) {
       //console.log('User has %d repos', repos.length);
       //console.log(repos);
-      let data = JSON.parse(repos);
+      let data = JSON.parse(body);
+      //console.log(data);
+      //console.log("---");
+      console.log(body);
       let items = data.Data;
       console.log(items);
       items.forEach(function(product) {
