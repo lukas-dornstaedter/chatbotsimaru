@@ -137,7 +137,7 @@ router.get("/neworder", function(req, res) {
       "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
       Accept: "application/json"
     },
-    json: true // Automatically parses the JSON string in the response
+    json: false // Automatically parses the JSON string in the response
   };
 
   rp(options)
