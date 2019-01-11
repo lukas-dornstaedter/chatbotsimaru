@@ -150,6 +150,7 @@ router.get("/neworder", function(req, res) {
         });
       });
       console.log(billbeeStocks);
+      res.json([]);
     }
   );
 });
