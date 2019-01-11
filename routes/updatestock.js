@@ -4,6 +4,7 @@ const config = require("../config");
 const express = require("express");
 var WooCommerceAPI = require("woocommerce-api");
 var request = require("request");
+var rp = require('request-promise');
 
 const router = express.Router();
 
@@ -125,7 +126,40 @@ router.get("/neworder", function(req, res) {
   let orderID = req.query.orderid;
 
   let billbeeStocks = [];
+  var username = config.BILLBEE_USERNAME,
+  var password = config.BILLBEE_PASS,
+  var url = `https://app.billbee.io/api/v1/products?pageSize=10&page=1`,
+  var auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+  var options = {
+    uri: 'https://app.billbee.io/api/v1/products?pageSize=10&page=1',
+    headers:{
+      Authorization: auth,
+      "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+      Accept: "application/json"
+    },
+    json: true // Automatically parses the JSON string in the response
+};
 
+rp(options)
+    .then(function (repos) {
+        //console.log('User has %d repos', repos.length);
+        let data = JSON.parse(repos);
+        let items = data.Data;
+        items.forEach(function(product) {
+          billbeeStocks.push({
+            sku: product.SKU,
+            stock: product.StockCurrent
+          });
+        });
+    })
+    .catch(function (err) {
+        // API call failed...
+    })
+    .finally(function(){
+      console.log("ready...");
+    });
+  
+  /*
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
@@ -155,6 +189,8 @@ router.get("/neworder", function(req, res) {
     }
   );
   console.log("ready...");
+
+*/
 });
 
 module.exports = router;
