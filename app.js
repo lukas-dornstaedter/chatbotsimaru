@@ -231,7 +231,7 @@ function handleDialogFlowAction(
           setTimeout(function() {
             let buttons = [
               {
-                title: "Settings",
+                title: "Artikelauswahl treffen",
                 type: "web_url",
                 url:
                   "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=" +
