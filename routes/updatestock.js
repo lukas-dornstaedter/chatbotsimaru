@@ -400,6 +400,8 @@ function sendInfoMail(mailAdress) {
     })
     .finally(function() {
       //console.log(billbeeStocks);
+      console.log(postions);
+      console.log(mailAdress);
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       const msg = {
         to: mailAdress,
