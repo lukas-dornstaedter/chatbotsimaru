@@ -173,7 +173,7 @@ function getServantfulStock(page, pageSize, callback) {
 }
 
 function getAmzStock(callback) {
-  output = null;
+  let output = null;
   var options = {
     uri: `http://simaru-app.pw:8001/products/katalog/Alle%20Produkte`
   };
