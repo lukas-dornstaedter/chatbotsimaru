@@ -124,11 +124,16 @@ router.get("/update", function(req, res) {
 
 router.get("/neworder", function(req, res) {
   let orderID = req.query.orderid;
+  getShippingTag(orderID, tag => {
+    setShippingTag(orderID, tag);
+  });
+});
 
+function getServantfulStock(page, pageSize, callback) {
   let billbeeStocks = [];
   var username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
-    url = `https://app.billbee.io/api/v1/products?pageSize=200&page=1`,
+    url = `https://app.billbee.io/api/v1/products?pageSize=${pageSize}&page=${page}`,
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
   var options = {
     uri: url,
@@ -142,15 +147,8 @@ router.get("/neworder", function(req, res) {
 
   rp(options)
     .then(function(response) {
-      //console.log('User has %d repos', repos.length);
-      //console.log(response);
       let data = JSON.parse(response);
-      //console.log(repos.Data[0].Id);
-      //console.log(data);
-      //console.log("---");
-      //console.log(data);
       let items = data.Data;
-      //console.log(items);
       items.forEach(function(product) {
         billbeeStocks.push({
           sku: product.SKU,
@@ -162,43 +160,188 @@ router.get("/neworder", function(req, res) {
       // API call failed...
     })
     .finally(function() {
-      console.log(billbeeStocks);
+      //console.log(billbeeStocks);
       console.log("ready...");
+      callback(billbeeStocks);
     });
-  res.json([]);
+  //return billbeeStocks;
+}
 
-  /*
+function getAmzStock(callback) {
+  output = null;
+  var options = {
+    uri: `http://simaru-app.pw:8001/products/katalog/Alle%20Produkte`
+  };
+  rp(options)
+    .then(function(response) {
+      let data = JSON.parse(response);
+      output = data;
+    })
+    .catch(function(err) {
+      // API call failed...
+    })
+    .finally(function() {
+      //console.log(billbeeStocks);
+      console.log("ready...");
+      callback(output);
+    });
+}
+
+function getOrder(orderID, callback) {
+  let postions = [];
+  var username = config.BILLBEE_USERNAME,
+    password = config.BILLBEE_PASS,
+    url = `https://app.billbee.io/api/v1/orders/${orderID}`,
+    auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+  var options = {
+    uri: url,
+    headers: {
+      Authorization: auth,
+      "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+      Accept: "application/json"
+    },
+    json: false // Automatically parses the JSON string in the response
+  };
+
+  rp(options)
+    .then(function(response) {
+      let data = JSON.parse(response);
+      let items = data.Data.OrderItems;
+      items.forEach(function(postion) {
+        postions.push({
+          sku: postion.Product.SKU,
+          count: postion.Quantity
+        });
+      });
+    })
+    .catch(function(err) {
+      // API call failed...
+    })
+    .finally(function() {
+      //console.log(billbeeStocks);
+      console.log("ready...");
+      callback(postions);
+    });
+}
+
+function defineShippingType(postions, stockServant, stockAmz) {
+  let shippingTypes = []; // Verfügbarkeit der jeweiligen Postion mit Servantful als Prio d.h. wenn Servantful in Stock dann wird hier servant angezeigt
+  let shippingAmz = []; // Verfügbarkeit auf Amazon: Array wird nur mit amz gepusht wenn der Artikel auf Amazon verfügbar ist wenn da Array gleicher Länge dem shippingTypes Array ist, sind alle Postionen auf Amazon verfügbar
+  let shippingType = null;
+
+  postions.forEach(function(postion) {
+    let sku = postion.sku,
+      count = postion.count,
+      amzCount = 0,
+      servantCount = 0;
+
+    stockServant.forEach(function(item) {
+      if (item.sku == sku) {
+        servantCount += item.stock;
+      }
+    });
+
+    stockAmz.forEach(function(item) {
+      if (item.sku == sku) {
+        amzCount += item.amazon;
+      }
+    });
+
+    if (count < servantCount) {
+      shippingTypes.push(`servant`);
+      // Check If Amz is also possible
+      if (count < amzCount) {
+        shippingAmz.push(`amz`);
+      }
+    } else if (count > servantCount && count < amzCount) {
+      shippingTypes.push(`amz`);
+      shippingAmz.push(`amz`);
+    } else {
+      shippingTypes.push(`outOfStock`);
+    }
+  });
+  console.log(shippingTypes);
+  console.log(shippingAmz);
+
+  shippingTypes.forEach(function(type) {
+    if (shippingType == null && shippingType != `outOfStock`) {
+      shippingType = type;
+    } else if (shippingType != null && shippingType == type) {
+    } else if (type == `outOfStock`) {
+      shippingType = `outOfStock`;
+      return shippingType;
+    } else if (
+      shippingType != null &&
+      shippingType != type &&
+      type != `outOfStock`
+    ) {
+      if (shippingTypes.length == shippingAmz.length) {
+        // Prüfen ob alle Postionen auf Amazon verfübar sind
+        shippingType = `amz`;
+      } else {
+        //Falls nicht tag auf mixed setzten = manueller Handlungsbedarf
+        shippingType = `mixed`;
+      }
+    }
+  });
+  return shippingType;
+}
+
+function getShippingTag(orderID, callback) {
+  let stockServant = [];
+  let stockAmz = [];
+  getServantfulStock(1, 200, data => {
+    stockServant = data;
+    console.log(stockServant.length);
+    getServantfulStock(2, 200, data => {
+      stockServant = stockServant.concat(data);
+      console.log(stockServant.length);
+
+      // Billbee Stock Daten geladen
+
+      getAmzStock(data => {
+        stockAmz = data;
+        console.log(stockAmz.length);
+
+        getOrder(orderID, data => {
+          let postions = data;
+          console.log(
+            `ShippingType:` +
+              defineShippingType(postions, stockServant, stockAmz)
+          );
+          callback(defineShippingType(postions, stockServant, stockAmz));
+        });
+      });
+    });
+  });
+}
+
+function setShippingTag(orderID, shippingTag) {
   var request = require("request"),
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
-    url = `https://app.billbee.io/api/v1/products?pageSize=10&page=1`,
+    url = `https://app.billbee.io/api/v1/orders/${orderID}/tags`,
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
-  request(
+  request.post(
     {
       url: url,
       headers: {
         Authorization: auth,
         "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
         Accept: "application/json"
-      }
+      },
+      body: {
+        Tags: [`shippingRec:${shippingTag}`]
+      },
+      json: true
     },
     function(error, response, body) {
-      let data = JSON.parse(body);
-      let items = data.Data;
-      items.forEach(function(product) {
-        billbeeStocks.push({
-          sku: product.SKU,
-          stock: product.StockCurrent
-        });
-      });
-      console.log(billbeeStocks);
-      res.json([]);
+      if (!error && response.statusCode == 200) {
+        console.log(body);
+      }
     }
   );
-  console.log("ready...");
-
-*/
-});
+}
 
 module.exports = router;
