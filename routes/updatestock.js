@@ -377,8 +377,8 @@ function sendInfoMail(mailAdress, orderID) {
       let items = data.Data.OrderItems;
       items.forEach(function(postion) {
         postions.push({
-          sku: postion.Product.SKU,
-          count: postion.Quantity
+          count: postion.Quantity,
+          sku: postion.Product.SKU
         });
       });
       orderNumber = data.Data.OrderNumber;
@@ -400,8 +400,10 @@ function sendInfoMail(mailAdress, orderID) {
     })
     .finally(function() {
       //console.log(billbeeStocks);
-      console.log(postions);
-      console.log(mailAdress);
+      let postionsFormatted = null;
+      postions.forEach(function(p) {
+        postionsFormatted.push(`${p.count}x ${p.sku}<br>`);
+      });
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       const msg = {
         to: mailAdress,
@@ -410,7 +412,7 @@ function sendInfoMail(mailAdress, orderID) {
         substitutionWrappers: ["{{", "}}"],
         dynamic_template_data: {
           orderNumber: orderNumber,
-          orderPositions: JSON.stringify(postions),
+          orderPositions: postionsFormatted,
           sACompany: shippingAdress.Company,
           sAFirstName: shippingAdress.FirstName,
           sALastName: shippingAdress.LastName,
