@@ -411,7 +411,16 @@ function sendInfoMail(mailAdress, orderID) {
         dynamic_template_data: {
           orderNumber: orderNumber,
           orderPositions: JSON.stringify(postions),
-          shippingAdress: JSON.stringify(shippingAdress),
+          sACompany: shippingAdress.Company,
+          sAFirstName: shippingAdress.FirstName,
+          sALastName: shippingAdress.LastName,
+          sAStreet: shippingAdress.Street,
+          sAHouseNumber: shippingAdress.HouseNumber,
+          saLine2: shippingAdress.Line2,
+          saLine3: shippingAdress.Line3,
+          saZip: shippingAdress.Zip,
+          saCity: shippingAdress.City,
+          saCountry: shippingAdress.Country,
           subject: `Handlungsbedarf: Artikel OutOfStock OrderID: ${orderNumber}`
         }
       };
