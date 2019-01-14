@@ -400,7 +400,7 @@ function sendInfoMail(mailAdress, orderID) {
     })
     .finally(function() {
       //console.log(billbeeStocks);
-      let postionsFormatted = null;
+      let postionsFormatted = [];
       postions.forEach(function(p) {
         postionsFormatted.push(`${p.count}x ${p.sku}<br>`);
       });
