@@ -5,6 +5,7 @@ const express = require("express");
 var WooCommerceAPI = require("woocommerce-api");
 var request = require("request");
 var rp = require("request-promise");
+const sgMail = require("@sendgrid/mail");
 
 const router = express.Router();
 
@@ -126,6 +127,9 @@ router.get("/neworder", function(req, res) {
   let orderID = req.query.orderid;
   getShippingTag(orderID, tag => {
     setShippingTag(orderID, tag);
+    if (tag == `shippingRec:outOfStock`) {
+      sendInfoMail(`lukas.dornstaedter@simaru.de`);
+    }
     res.json([
       {
         tag: tag
@@ -347,6 +351,71 @@ function setShippingTag(orderID, shippingTag) {
       }
     }
   );
+}
+
+function sendInfoMail(mailAdress) {
+  let postions = [];
+  let orderNumber = null;
+  let shippingAdress = null;
+  var username = config.BILLBEE_USERNAME,
+    password = config.BILLBEE_PASS,
+    url = `https://app.billbee.io/api/v1/orders/${orderID}`,
+    auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+  var options = {
+    uri: url,
+    headers: {
+      Authorization: auth,
+      "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+      Accept: "application/json"
+    },
+    json: false // Automatically parses the JSON string in the response
+  };
+
+  rp(options)
+    .then(function(response) {
+      let data = JSON.parse(response);
+      let items = data.Data.OrderItems;
+      items.forEach(function(postion) {
+        postions.push({
+          sku: postion.Product.SKU,
+          count: postion.Quantity
+        });
+      });
+      orderNumber = data.Data.OrderNumber;
+      shippingAdress = {
+        Company: data.Data.ShippingAddress.Company,
+        FirstName: data.Data.ShippingAddress.FirstName,
+        LastName: data.Data.ShippingAddress.LastName,
+        Street: data.Data.ShippingAddress.Street,
+        HouseNumber: data.Data.ShippingAddress.HouseNumber,
+        Line2: data.Data.ShippingAddress.Line2,
+        Line3: data.Data.ShippingAddress.Line3,
+        Zip: data.Data.ShippingAddress.Zip,
+        City: data.Data.ShippingAddress.City,
+        Country: data.Data.ShippingAddress.Country
+      };
+    })
+    .catch(function(err) {
+      // API call failed...
+    })
+    .finally(function() {
+      //console.log(billbeeStocks);
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      const msg = {
+        to: mailAdress,
+        from: `info@simaru.de`,
+        templateId: "d-f60bb0e177d441ed8595814b9d148586",
+        substitutionWrappers: ["{{", "}}"],
+        dynamic_template_data: {
+          orderNumber: orderNumber,
+          orderPositions: JSON.stringify(postions),
+          shippingAdress: JSON.stringify(shippingAdress),
+          subject: `Handlungsbedarf: Artikel OutOfStock OrderID: ${orderNumber}`
+        }
+      };
+
+      sgMail.send(msg);
+    });
 }
 
 module.exports = router;
