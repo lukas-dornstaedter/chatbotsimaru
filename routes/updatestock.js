@@ -127,7 +127,7 @@ router.get("/neworder", function(req, res) {
   let orderID = req.query.orderid;
   getShippingTag(orderID, tag => {
     setShippingTag(orderID, tag);
-    if (tag == `shippingRec:outOfStock`) {
+    if (tag == `outOfStock`) {
       sendInfoMail(`lukas.dornstaedter@simaru.de`, orderID);
     }
     res.json([
