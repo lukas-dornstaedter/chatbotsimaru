@@ -416,11 +416,11 @@ function sendInfoMail(mailAdress, orderID) {
           sALastName: shippingAdress.LastName,
           sAStreet: shippingAdress.Street,
           sAHouseNumber: shippingAdress.HouseNumber,
-          saLine2: shippingAdress.Line2,
-          saLine3: shippingAdress.Line3,
-          saZip: shippingAdress.Zip,
-          saCity: shippingAdress.City,
-          saCountry: shippingAdress.Country,
+          sALine2: shippingAdress.Line2,
+          sALine3: shippingAdress.Line3,
+          sAZip: shippingAdress.Zip,
+          sACity: shippingAdress.City,
+          sACountry: shippingAdress.Country,
           subject: `Handlungsbedarf: Artikel OutOfStock OrderID: ${orderNumber}`
         }
       };
