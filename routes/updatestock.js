@@ -402,7 +402,7 @@ function sendInfoMail(mailAdress, orderID) {
       //console.log(billbeeStocks);
       let postionsFormatted = [];
       postions.forEach(function(p) {
-        postionsFormatted.push(`${p.count}x ${p.sku}<br>`);
+        postionsFormatted.push(`${p.count}x ${p.sku}\n`);
       });
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       const msg = {
