@@ -177,14 +177,14 @@ function getServantfulStock(page, pageSize, callback) {
 }
 
 function getAmzStock(callback) {
-  let output = null;
+  let data = null;
+  let output = [];
   var options = {
     uri: `http://simaru-app.pw:8001/products/katalog/Alle%20Produkte`
   };
   rp(options)
     .then(function(response) {
-      let data = JSON.parse(response);
-      output = data;
+      data = JSON.parse(response);
     })
     .catch(function(err) {
       // API call failed...
@@ -192,8 +192,33 @@ function getAmzStock(callback) {
     .finally(function() {
       //console.log(billbeeStocks);
       console.log("ready...");
+      data.forEach(function(item) {
+        output.push({
+          sku: checkAltSKU(item.sku),
+          amazon: item.amazon
+        });
+      });
       callback(output);
     });
+}
+
+function checkAltSKU(sku) {
+  if (
+    sku == `S-T-01` ||
+    sku == `S-T-02` ||
+    sku == `S-T-03` ||
+    sku == `S-T-04` ||
+    sku == `S-T-05` ||
+    sku == `S-T-06` ||
+    sku == `S-T-07` ||
+    sku == `S-T-08` ||
+    sku == `S-T-09`
+  ) {
+    let output = `${sku}N`;
+    return output;
+  } else {
+    return sku;
+  }
 }
 
 function getOrder(orderID, callback) {
@@ -332,6 +357,16 @@ function setShippingTag(orderID, shippingTag) {
     url = `https://app.billbee.io/api/v1/orders/${orderID}/tags`,
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
+  if (shippingTag == `outOfStock`) {
+    let bodyTag = {
+      Tags: [`shippingRec:${shippingTag}`, `coureon`]
+    };
+  } else {
+    let bodyTag = {
+      Tags: [`shippingRec:${shippingTag}`]
+    };
+  }
+
   request.post(
     {
       url: url,
@@ -340,9 +375,7 @@ function setShippingTag(orderID, shippingTag) {
         "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
         Accept: "application/json"
       },
-      body: {
-        Tags: [`shippingRec:${shippingTag}`]
-      },
+      body: bodyTag,
       json: true
     },
     function(error, response, body) {
