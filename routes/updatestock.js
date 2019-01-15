@@ -355,14 +355,15 @@ function setShippingTag(orderID, shippingTag) {
     username = config.BILLBEE_USERNAME,
     password = config.BILLBEE_PASS,
     url = `https://app.billbee.io/api/v1/orders/${orderID}/tags`,
-    auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+    auth = "Basic " + new Buffer(username + ":" + password).toString("base64"),
+    bodyTag = null;
 
   if (shippingTag == `outOfStock`) {
-    let bodyTag = {
+    bodyTag = {
       Tags: [`shippingRec:${shippingTag}`, `coureon`]
     };
   } else {
-    let bodyTag = {
+    bodyTag = {
       Tags: [`shippingRec:${shippingTag}`]
     };
   }
