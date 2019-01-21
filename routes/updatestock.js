@@ -360,7 +360,7 @@ function setShippingTag(orderID, shippingTag) {
 
   if (shippingTag == `outOfStock`) {
     bodyTag = {
-      Tags: [`shippingRec:${shippingTag}`, `coureon`]
+      Tags: [`shippingRec:${shippingTag}`]
     };
   } else {
     bodyTag = {
