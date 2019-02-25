@@ -220,33 +220,70 @@ function handleDialogFlowAction(
   parameters
 ) {
   switch (action) {
+    //intent: return
     case "retour":
       if (contexts[0].name.includes("retourinfoset")) {
         sendTypingOn(sender);
 
+        //If zipcode and ordernumber are transferred
         if (isDefined(contexts[0].parameters.fields["orderID"])) {
           let orderID = contexts[0].parameters.fields["orderID"].stringValue;
+          let zipCode = contexts[0].parameters.fields[""].stringValue;
 
-          //ask what user wants to do next
-          setTimeout(function() {
-            let buttons = [
-              {
-                title: "Artikelauswahl",
-                type: "web_url",
-                url:
-                  "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=" +
-                  orderID,
-                webview_height_ratio: "tall",
-                messenger_extensions: true
+          //Get order data by ID
+          var username = config.BILLBEE_USERNAME,
+            password = config.BILLBEE_PASS,
+            url = `https://app.billbee.io/api/v1/orders/findbyextref/${orderID}`,
+            auth =
+              "Basic " +
+              new Buffer(username + ":" + password).toString("base64");
+          var options = {
+            uri: url,
+            headers: {
+              Authorization: auth,
+              "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+              Accept: "application/json"
+            },
+            json: false // Automatically parses the JSON string in the response
+          };
+
+          rp(options)
+            .then(function(response) {
+              data = JSON.parse(response);
+            })
+            .catch(function(err) {
+              // API call failed...
+            })
+            .finally(function() {
+              //Check if the zipcode is correct.
+              if (zipCode == data.ShippingAddress.Zip) {
+                //send webview
+                setTimeout(function() {
+                  let buttons = [
+                    {
+                      title: "Artikelauswahl",
+                      type: "web_url",
+                      url:
+                        "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=" +
+                        orderID,
+                      webview_height_ratio: "tall",
+                      messenger_extensions: true
+                    }
+                  ];
+
+                  sendButtonMessage(
+                    sender,
+                    "Bitte wähle jene Artikel aus,die du zurück senden möchtest.",
+                    buttons
+                  );
+                }, 3000);
+              } else {
+                sendTextMessage(
+                  sender,
+                  "Leider konnten wir keine Bestellung zu diesen Daten finden. Bitte versuche es erneut oder kontaktiere unseren Support."
+                );
               }
-            ];
-
-            sendButtonMessage(
-              sender,
-              "Bitte wähle jene Artikel aus,die du zurück senden möchtest.",
-              buttons
-            );
-          }, 3000);
+            });
         }
       } else {
         handleMessages(messages, sender);
