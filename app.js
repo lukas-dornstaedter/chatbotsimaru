@@ -336,6 +336,10 @@ function handleDialogFlowAction(
           isDefined(contexts[0].parameters.fields["orderNumber"]) &&
           isDefined(contexts[0].parameters.fields["zipCode"])
         ) {
+          let orderNumber =
+              contexts[0].parameters.fields["orderNumber"].stringValue,
+            zipCode = contexts[0].parameters.fields["zipCode"].stringValue;
+
           var request = require("request"),
             username = config.BILLBEE_USERNAME,
             password = config.BILLBEE_PASS,
