@@ -228,7 +228,8 @@ function handleDialogFlowAction(
         //If zipcode and ordernumber are transferred
         if (isDefined(contexts[0].parameters.fields["orderID"])) {
           let orderID = contexts[0].parameters.fields["orderID"].stringValue;
-          let zipCode = contexts[0].parameters.fields[""].stringValue;
+          let zipCode =
+            contexts[0].parameters.fields["deliveryZipCode"].stringValue;
 
           //Get order data by ID
           var username = config.BILLBEE_USERNAME,
