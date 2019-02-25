@@ -258,7 +258,7 @@ function handleDialogFlowAction(
             })
             .finally(function() {
               //Check if the zipcode is correct.
-              if (zipCode == data.ShippingAddress.Zip) {
+              if (zipCode == data.Data.ShippingAddress.Zip) {
                 //send webview
                 setTimeout(function() {
                   let buttons = [
