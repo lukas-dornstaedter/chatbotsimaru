@@ -231,7 +231,7 @@ function handleDialogFlowAction(
           setTimeout(function() {
             let buttons = [
               {
-                title: "Artikelauswahl treffen",
+                title: "Artikelauswahl",
                 type: "web_url",
                 url:
                   "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=" +
@@ -243,7 +243,7 @@ function handleDialogFlowAction(
 
             sendButtonMessage(
               sender,
-              "Bitte wähle hier aus, welche Artikel du zurück senden möchtest...",
+              "Bitte wähle jene Artikel aus,die du zurück senden möchtest.",
               buttons
             );
           }, 3000);
