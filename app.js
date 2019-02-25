@@ -282,7 +282,8 @@ function handleDialogFlowAction(
               } else {
                 sendTextMessage(
                   sender,
-                  "Leider konnten wir keine Bestellung zu diesen Daten finden. Bitte versuche es erneut oder kontaktiere unseren Support."
+                  "Leider konnten wir keine Bestellung zu diesen Daten finden." +
+                    "Bitte versuche es erneut oder kontaktiere unseren Support."
                 );
               }
             });
@@ -291,9 +292,15 @@ function handleDialogFlowAction(
         handleMessages(messages, sender);
       }
       break;
+    //intent: fallback
     case "create-support-ticket":
       if (contexts[0].name.includes("defaultfallbackintent-followup")) {
-        if (isDefined(contexts[0].parameters.fields["customerName"])) {
+        //If name, mail and message are transferred
+        if (
+          isDefined(contexts[0].parameters.fields["customerName"]) &&
+          isDefined(contexts[0].parameters.fields["customerEmail"]) &&
+          isDefined(contexts[0].parameters.fields["customerMessage"])
+        ) {
           let customerName =
               contexts[0].parameters.fields["customerName"].stringValue,
             customerEmail =
@@ -301,6 +308,7 @@ function handleDialogFlowAction(
             customerMessage =
               contexts[0].parameters.fields["customerMessage"].stringValue;
 
+          //send mail to zohodesk
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           const msg = {
             to: "support@simaru.zohodesk.eu",
@@ -311,6 +319,7 @@ function handleDialogFlowAction(
           };
           sgMail.send(msg);
 
+          //confirmation to the user
           sendTextMessage(
             sender,
             "Danke " +
