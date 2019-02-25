@@ -263,25 +263,22 @@ function handleDialogFlowAction(
               //Check if the zipcode is correct.
               if (zipCode == data.Data.ShippingAddress.Zip) {
                 //send webview
-                setTimeout(function() {
-                  let buttons = [
-                    {
-                      title: "Artikelauswahl",
-                      type: "web_url",
-                      url:
-                        "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=" +
-                        orderID,
-                      webview_height_ratio: "tall",
-                      messenger_extensions: true
-                    }
-                  ];
-
-                  sendButtonMessage(
-                    sender,
-                    "Bitte wähle jene Artikel aus,die du zurück senden möchtest.",
-                    buttons
-                  );
-                }, 3000);
+                let buttons = [
+                  {
+                    title: "Artikelauswahl",
+                    type: "web_url",
+                    url:
+                      "https://simaruchatbot.herokuapp.com/webviews/webview?orderid=" +
+                      orderID,
+                    webview_height_ratio: "tall",
+                    messenger_extensions: true
+                  }
+                ];
+                sendButtonMessage(
+                  sender,
+                  "Bitte wähle jene Artikel aus,die du zurück senden möchtest.",
+                  buttons
+                );
               } else {
                 sendTextMessage(
                   sender,
