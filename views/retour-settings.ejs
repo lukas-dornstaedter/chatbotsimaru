@@ -17,6 +17,44 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <style>
+      [type="checkbox"]:checked + span:not(.lever):before {
+        top: -4px;
+        left: -5px;
+        width: 12px;
+        height: 22px;
+        border-top: 2px solid transparent;
+        border-left: 2px solid transparent;
+        border-right: 2px solid #aebc63;
+        border-bottom: 2px solid #aebc63;
+        -webkit-transform: rotate(40deg);
+        transform: rotate(40deg);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+      }
+      input:not([type]):focus:not([readonly]),
+      input[type="text"]:not(.browser-default):focus:not([readonly]),
+      input[type="password"]:not(.browser-default):focus:not([readonly]),
+      input[type="email"]:not(.browser-default):focus:not([readonly]),
+      input[type="url"]:not(.browser-default):focus:not([readonly]),
+      input[type="time"]:not(.browser-default):focus:not([readonly]),
+      input[type="date"]:not(.browser-default):focus:not([readonly]),
+      input[type="datetime"]:not(.browser-default):focus:not([readonly]),
+      input[type="datetime-local"]:not(.browser-default):focus:not([readonly]),
+      input[type="tel"]:not(.browser-default):focus:not([readonly]),
+      input[type="number"]:not(.browser-default):focus:not([readonly]),
+      input[type="search"]:not(.browser-default):focus:not([readonly]),
+      textarea.materialize-textarea:focus:not([readonly]) {
+        border-bottom: 1px solid #aebc63;
+        -webkit-box-shadow: 0 1px 0 0 #aebc63;
+        box-shadow: 0 1px 0 0 #aebc63;
+      }
+      label.active {
+        color: #aebc63 !important;
+      }
+    </style>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script
