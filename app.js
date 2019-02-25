@@ -6,6 +6,7 @@ const express = require("express");
 const crypto = require("crypto");
 const bodyParser = require("body-parser");
 const request = require("request");
+var rp = require("request-promise");
 const app = express();
 const uuid = require("uuid");
 const sgMail = require("@sendgrid/mail");
