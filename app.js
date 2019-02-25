@@ -248,7 +248,7 @@ function handleDialogFlowAction(
             },
             json: false // Automatically parses the JSON string in the response
           };
-
+          let data = null;
           rp(options)
             .then(function(response) {
               data = JSON.parse(response);
