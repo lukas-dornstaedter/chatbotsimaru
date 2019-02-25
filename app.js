@@ -363,7 +363,8 @@ function handleDialogFlowAction(
               if (data.ErrorCode == 2) {
                 sendTextMessage(
                   sender,
-                  "Wir konnten leider keine Bestellung zu diesen Daten finden. Bitte versuche es erneut oder kontaktiere uns unter support@simaru.de"
+                  "Wir konnten leider keine Bestellung zu diesen Daten finden. " +
+                    "Bitte versuche es erneut oder kontaktiere uns unter support@simaru.de"
                 );
               } else {
                 let adressZipCode = data.Data.ShippingAddress.Zip;
@@ -372,42 +373,48 @@ function handleDialogFlowAction(
                 if (adressZipCode != zipCode) {
                   sendTextMessage(
                     sender,
-                    "Wir konnten leider keine Bestellung zu diesen Daten finden. Bitte versuche es erneut oder kontaktiere uns unter support@simaru.de"
+                    "Wir konnten leider keine Bestellung zu diesen Daten finden. " +
+                      "Bitte versuche es erneut oder kontaktiere uns unter support@simaru.de"
                   );
                 } else {
-                  if (orderStatus == 4) {
-                    if (data.Data.ShippingIds.length > 0) {
-                      let shipper = data.Data.ShippingIds[0].Shipper;
-                      let trackingNumber = data.Data.ShippingIds[0].ShippingId;
+                  switch (orderStatus) {
+                    case 4:
+                      if (data.Data.ShippingIds.length > 0) {
+                        let shipper = data.Data.ShippingIds[0].Shipper;
+                        let trackingNumber =
+                          data.Data.ShippingIds[0].ShippingId;
 
-                      if (shipper == "Amazon FBA (GmbH)") {
-                        sendTextMessage(
-                          sender,
-                          "Deine Bestellung wurde versendet. Es gibt keinen Tracking Code zu deiner Bestellung."
-                        );
-                      } else {
-                        sendTextMessage(
-                          sender,
-                          "Deine Bestellung wurde per DHL versendet. Du kannst die Bestellung unter folgendem Link verfolgen: https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=" +
-                            trackingNumber
-                        );
+                        if (shipper == "Amazon FBA (GmbH)") {
+                          sendTextMessage(
+                            sender,
+                            "Deine Bestellung wurde versendet. Es gibt keinen Tracking Code zu deiner Bestellung."
+                          );
+                        } else {
+                          sendTextMessage(
+                            sender,
+                            "Deine Bestellung wurde per DHL versendet. Du kannst die Bestellung unter folgendem Link verfolgen: " +
+                              `https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=${trackingNumber}`
+                          );
+                        }
                       }
-                    }
-                  } else if (orderStatus == 13) {
-                    sendTextMessage(
-                      sender,
-                      "Deine Bestellung wird soeben verpackt."
-                    );
-                  } else if (orderStatus == 3) {
-                    sendTextMessage(
-                      sender,
-                      "Deine Zahlung ist bei uns eingegangen. Deine Bestellung wird im nächsten Schritt verpackt und versendet."
-                    );
-                  } else if (orderStatus == 2) {
-                    sendTextMessage(
-                      sender,
-                      "Deine Bestellung wurde erfolgreich aufgegeben. Wir warten nun noch auf die Bestätigung der Zahlung."
-                    );
+                      break;
+                    case 13:
+                      sendTextMessage(
+                        sender,
+                        "Deine Bestellung wird soeben verpackt."
+                      );
+                      break;
+                    case 3:
+                      sendTextMessage(
+                        sender,
+                        "Deine Zahlung ist bei uns eingegangen. Deine Bestellung wird im nächsten Schritt verpackt und versendet."
+                      );
+                      break;
+                    case 2:
+                      sendTextMessage(
+                        sender,
+                        "Deine Bestellung wurde erfolgreich aufgegeben. Wir warten nun noch auf die Bestätigung der Zahlung."
+                      );
                   }
                 }
               }
