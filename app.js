@@ -227,7 +227,10 @@ function handleDialogFlowAction(
         sendTypingOn(sender);
 
         //If zipcode and ordernumber are transferred
-        if (isDefined(contexts[0].parameters.fields["orderID"])) {
+        if (
+          isDefined(contexts[0].parameters.fields["orderID"]) &&
+          isDefined(contexts[0].parameters.fields["deliveryZipCode"])
+        ) {
           let orderID = contexts[0].parameters.fields["orderID"].stringValue;
           let zipCode =
             contexts[0].parameters.fields["deliveryZipCode"].stringValue;
