@@ -322,45 +322,24 @@ function handleDialogFlowAction(
           //confirmation to the user
           sendTextMessage(
             sender,
-            "Danke " +
-              customerName +
-              "! Deine Nachricht wurde an einen Support Mitarbeiter weitergeleitet."
+            `Danke ${customerName}! Deine Nachricht wurde an einen Support Mitarbeiter weitergeleitet.`
           );
         }
       } else {
         handleMessages(messages, sender);
       }
       break;
+    //intent: order status
     case "get-shipping-number":
-      if (
-        isDefined(contexts[0].parameters.fields["orderNumber"]) &&
-        contexts[0].parameters.fields["orderNumber"].stringValue != "" &&
-        contexts[0].parameters.fields["zipCode"].stringValue != "" &&
-        (contexts[0].name.includes("ordernumberset") ||
-          contexts[0].name.includes(
-            "12c16b4c-6fd0-4311-ae8f-6de5dd2b8096_id_dialog_context"
-          )) &&
-        contexts[0].parameters
-      ) {
-        let jouput =
+      if (contexts[0].name.includes("ordernumberset")) {
+        if (
           isDefined(contexts[0].parameters.fields["orderNumber"]) &&
-          contexts[0].parameters.fields["orderNumber"] != ""
-            ? contexts[0].parameters
-            : "";
-
-        let orderMessage = "";
-        let zipCode = null;
-
-        if (isDefined(contexts[0].parameters.fields["orderNumber"])) {
-          let orderNumber = jouput.fields["orderNumber"].stringValue;
-          zipCode = jouput.fields["zipCode"].stringValue;
-
+          isDefined(contexts[0].parameters.fields["zipCode"])
+        ) {
           var request = require("request"),
             username = config.BILLBEE_USERNAME,
             password = config.BILLBEE_PASS,
-            url =
-              "https://app.billbee.io/api/v1/orders/findbyextref/" +
-              orderNumber,
+            url = `https://app.billbee.io/api/v1/orders/findbyextref/${orderNumber}`,
             auth =
               "Basic " +
               new Buffer(username + ":" + password).toString("base64");
@@ -375,8 +354,6 @@ function handleDialogFlowAction(
               }
             },
             function(error, response, body) {
-              // Do more stuff with 'body' here
-              //console.log(body.Data);
               let data = JSON.parse(body);
 
               if (data.ErrorCode == 2) {
@@ -435,8 +412,6 @@ function handleDialogFlowAction(
         } else {
           handleMessages(messages, sender);
         }
-      } else {
-        handleMessages(messages, sender);
       }
       break;
     default:
