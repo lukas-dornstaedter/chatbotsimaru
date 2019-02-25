@@ -416,6 +416,8 @@ function handleDialogFlowAction(
         } else {
           handleMessages(messages, sender);
         }
+      } else {
+        handleMessages(messages, sender);
       }
       break;
     default:
