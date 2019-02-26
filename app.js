@@ -958,9 +958,13 @@ function receivedPostback(event) {
           type: "postback",
           title: "ja",
           payload: {
-            message: {
-              text: "hello, world!"
-            }
+            "messaging_type": "<MESSAGING_TYPE>",
+            "recipient":{
+              "id":senderID
+          },
+          "message":{
+            "text":"hello, world!"
+          }
           }
         },
         {
