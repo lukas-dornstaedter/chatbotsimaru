@@ -332,6 +332,7 @@ function handleDialogFlowAction(
     //intent: order status
     case "get-shipping-number":
       if (contexts[0].name.includes("ordernumberset")) {
+        //If zipcode and ordernumber are transferred
         if (
           isDefined(contexts[0].parameters.fields["orderNumber"]) &&
           isDefined(contexts[0].parameters.fields["zipCode"])
@@ -370,6 +371,7 @@ function handleDialogFlowAction(
                 let adressZipCode = data.Data.ShippingAddress.Zip;
                 let orderStatus = data.Data.State;
 
+                //Check if the zipcode is correct.
                 if (adressZipCode != zipCode) {
                   sendTextMessage(
                     sender,
