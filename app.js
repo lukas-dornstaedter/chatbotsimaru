@@ -956,23 +956,18 @@ function receivedPostback(event) {
       let buttons = [
         {
           type: "postback",
-          title: "Warenkorb anzeigen",
-          payload: "stimmt"
+          title: "ja",
+          payload: "Wie ist der Status meiner Bestellung?"
         },
         {
           type: "postback",
           title: "ich brauch noch mehr",
           payload: "FALSE"
-        },
-        {
-          type: "postback",
-          title: "Bestellung abschicken",
-          payload: "FALSE"
         }
       ];
       sendButtonMessage(
         senderID,
-        "Super deine Artikel wurden dem Warenkorb hinzugefügt",
+        "Du möchtest den Status deiner Bestellung abrufen?",
         buttons
       );
       break;
