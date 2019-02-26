@@ -293,7 +293,7 @@ function handleDialogFlowAction(
       }
       break;
     //intent: fallback
-    case "order-status":
+    case "create-support-ticket":
       if (contexts[0].name.includes("defaultfallbackintent-followup")) {
         //If name, mail and message are transferred
         if (
