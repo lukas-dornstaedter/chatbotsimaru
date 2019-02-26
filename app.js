@@ -957,7 +957,11 @@ function receivedPostback(event) {
         {
           type: "postback",
           title: "ja",
-          payload: "Wie ist der Status meiner Bestellung?"
+          payload: {
+            message: {
+              text: "hello, world!"
+            }
+          }
         },
         {
           type: "postback",
