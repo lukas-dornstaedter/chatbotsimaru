@@ -161,7 +161,7 @@ router.get("/avocado", function (req, res) {
 
 
 
-  callBillbeeStockAPI(1, startDate, endDate, (output) => {
+  getAvocadoOrderData(1, startDate, endDate, (output) => {
     res.csv(output);
   });
 });
