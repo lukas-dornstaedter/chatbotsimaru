@@ -145,7 +145,7 @@ router.get("/avocado.csv", function (req, res) {
 
   let startDate = new Date();
   let endDate = new Date();
-  startDate = new Date(endDate.getTime() - 60 * 60 * 24 * 5 * 1000);
+  startDate = new Date(endDate.getTime() - 60 * 60 * 24 * 10 * 1000);
 
   startDate = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`;
   endDate = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`;
@@ -153,7 +153,7 @@ router.get("/avocado.csv", function (req, res) {
 
 
 
-  getAvocadoOrderData(1, startDate, endDate, (output) => {
+  getAvocadoOrderData(20, startDate, endDate, (output) => {
     res.csv(output, true);
   });
 });
