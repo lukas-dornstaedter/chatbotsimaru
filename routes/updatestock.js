@@ -140,6 +140,16 @@ router.get("/neworder", function (req, res) {
 });
 
 router.get("/avocado", function (req, res) {
+
+  const csvWriter = createCsvWriter({
+    path: './avocado-orders.csv',
+    header: [
+      { id: 'order', title: 'order' },
+      { id: 'tracking', title: 'tracking_id' },
+      { id: 'company', title: 'package_company' }
+    ]
+  });
+
   let startDate = new Date();
   let endDate = new Date();
   startDate = new Date(endDate.getTime() - 60 * 60 * 24 * 5 * 1000);
