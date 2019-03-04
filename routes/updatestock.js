@@ -7,6 +7,7 @@ var request = require("request");
 var rp = require("request-promise");
 const sgMail = require("@sendgrid/mail");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+var csv = require('express-csv');
 
 const router = express.Router();
 
@@ -142,7 +143,7 @@ router.get("/neworder", function (req, res) {
 router.get("/avocado", function (req, res) {
 
   const csvWriter = createCsvWriter({
-    path: './avocado-orders.csv',
+    path: '../avocado-orders.csv',
     header: [
       { id: 'order', title: 'order' },
       { id: 'tracking', title: 'tracking_id' },
@@ -161,14 +162,44 @@ router.get("/avocado", function (req, res) {
 
 
   callBillbeeStockAPI(1, startDate, endDate, (output) => {
-    csvWriter.writeRecords(output)       // returns a promise
-      .then(() => {
-        console.log('...Done');
-      });
+    res.csv(output);
   });
-  res.json([]);
 });
 
+function getAvocadoOrderData(pageSize, startDate, endDate, callback) {
+  let output = [];
+  output.push(["order", "tracking_id", "package_company"]);
+  let data = null;
+  var username = config.BILLBEE_USERNAME,
+    password = config.BILLBEE_PASS,
+    url = `https://app.billbee.io/api/v1/orders?minOrderDate=${startDate}&maxOrderDate=${endDate}&page=1&pageSize=${pageSize}&shopId=36046&orderStateId=4`,
+    auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+  var options = {
+    uri: url,
+    headers: {
+      Authorization: auth,
+      "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+      Accept: "application/json"
+    },
+    json: false // Automatically parses the JSON string in the response
+  };
+
+  rp(options)
+    .then(function (response) {
+
+      data = JSON.parse(response);
+      data = data.Data;
+    })
+    .catch(function (err) {
+
+    })
+    .finally(function () {
+      data.forEach(function (order) {
+        output.push([order.OrderNumber.slice(0, order.OrderNumber.indexOf("-")), order.ShippingIds[0].ShippingId, "DHL"]);
+      });
+      callback(output);
+    });
+}
 
 function callBillbeeStockAPI(pageSize, startDate, endDate, callback) {
   let output = [];
