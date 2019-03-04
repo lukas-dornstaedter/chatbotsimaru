@@ -6,14 +6,15 @@ var WooCommerceAPI = require("woocommerce-api");
 var request = require("request");
 var rp = require("request-promise");
 const sgMail = require("@sendgrid/mail");
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 const router = express.Router();
 
-router.get("/updatestock", function(req, res) {
+router.get("/updatestock", function (req, res) {
   res.render("retour-settings");
 });
 
-router.get("/update", function(req, res) {
+router.get("/update", function (req, res) {
   var WooCommerce = new WooCommerceAPI({
     url: "https://simaru.de",
     consumerKey: config.CONSUMER_KEY,
@@ -26,7 +27,7 @@ router.get("/update", function(req, res) {
 
   request(
     "http://simaru-app.pw:8001/products/katalog/Alle%20Produkte",
-    function(error, response, body) {
+    function (error, response, body) {
       console.log("error:", error); // Print the error if one occurred
       //console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
       //console.log("body:", body); // Print the HTML for the Google homepage.
@@ -36,7 +37,7 @@ router.get("/update", function(req, res) {
   );
 
   for (let i = 1; i < 2; i++) {
-    WooCommerce.getAsync(`products?per_page=15&page=${i}`).then(function(
+    WooCommerce.getAsync(`products?per_page=15&page=${i}`).then(function (
       /*
       err,
       data,
@@ -47,8 +48,8 @@ router.get("/update", function(req, res) {
       let products = JSON.parse(res.toJSON().body);
       //console.log(products);
 
-      products.forEach(function(item) {
-        dataelias.forEach(function(stockitem) {
+      products.forEach(function (item) {
+        dataelias.forEach(function (stockitem) {
           //console.log(item.sku);
           //console.log(stockitem.sku);
           let childItems = item.variations;
@@ -68,7 +69,7 @@ router.get("/update", function(req, res) {
               };
             }
 
-            WooCommerce.putAsync("products/" + item.id, data).then(function(
+            WooCommerce.putAsync("products/" + item.id, data).then(function (
               err,
               data,
               res
@@ -123,7 +124,7 @@ router.get("/update", function(req, res) {
   res.json([]);
 });
 
-router.get("/neworder", function(req, res) {
+router.get("/neworder", function (req, res) {
   let orderID = req.query.orderid;
   getShippingTag(orderID, tag => {
     setShippingTag(orderID, tag);
@@ -137,6 +138,65 @@ router.get("/neworder", function(req, res) {
     ]);
   });
 });
+
+router.get("/avocado", function (req, res) {
+  let startDate = new Date();
+  let endDate = new Date();
+  startDate = new Date(endDate.getTime() - 60 * 60 * 24 * 5 * 1000);
+
+  startDate = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`;
+  endDate = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`;
+
+
+
+
+  callBillbeeStockAPI(1, startDate, endDate, (output) => {
+    csvWriter.writeRecords(output)       // returns a promise
+      .then(() => {
+        console.log('...Done');
+      });
+  });
+  res.json([]);
+});
+
+
+function callBillbeeStockAPI(pageSize, startDate, endDate, callback) {
+  let output = [];
+  let data = null;
+  var username = config.BILLBEE_USERNAME,
+    password = config.BILLBEE_PASS,
+    url = `https://app.billbee.io/api/v1/orders?minOrderDate=${startDate}&maxOrderDate=${endDate}&page=1&pageSize=${pageSize}&shopId=36046&orderStateId=4`,
+    auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+  var options = {
+    uri: url,
+    headers: {
+      Authorization: auth,
+      "X-Billbee-Api-Key": config.BILLBEE_API_KEY,
+      Accept: "application/json"
+    },
+    json: false // Automatically parses the JSON string in the response
+  };
+
+  rp(options)
+    .then(function (response) {
+
+      data = JSON.parse(response);
+      data = data.Data;
+    })
+    .catch(function (err) {
+
+    })
+    .finally(function () {
+      data.forEach(function (order) {
+        output.push({
+          order: order.OrderNumber.slice(0, order.OrderNumber.indexOf("-")),
+          tracking: order.ShippingIds[0].ShippingId,
+          company: `DHL`
+        });
+      });
+      callback(output);
+    });
+}
 
 function getServantfulStock(page, pageSize, callback) {
   let billbeeStocks = [];
@@ -155,20 +215,20 @@ function getServantfulStock(page, pageSize, callback) {
   };
 
   rp(options)
-    .then(function(response) {
+    .then(function (response) {
       let data = JSON.parse(response);
       let items = data.Data;
-      items.forEach(function(product) {
+      items.forEach(function (product) {
         billbeeStocks.push({
           sku: product.SKU,
           stock: product.StockCurrent
         });
       });
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // API call failed...
     })
-    .finally(function() {
+    .finally(function () {
       //console.log(billbeeStocks);
       console.log("ready...");
       callback(billbeeStocks);
@@ -183,16 +243,16 @@ function getAmzStock(callback) {
     uri: `http://simaru-app.pw:8001/products/katalog/Alle%20Produkte`
   };
   rp(options)
-    .then(function(response) {
+    .then(function (response) {
       data = JSON.parse(response);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // API call failed...
     })
-    .finally(function() {
+    .finally(function () {
       //console.log(billbeeStocks);
       console.log("ready...");
-      data.forEach(function(item) {
+      data.forEach(function (item) {
         output.push({
           sku: checkAltSKU(item.sku),
           amazon: item.amazon
@@ -238,20 +298,20 @@ function getOrder(orderID, callback) {
   };
 
   rp(options)
-    .then(function(response) {
+    .then(function (response) {
       let data = JSON.parse(response);
       let items = data.Data.OrderItems;
-      items.forEach(function(postion) {
+      items.forEach(function (postion) {
         postions.push({
           sku: postion.Product.SKU,
           count: postion.Quantity
         });
       });
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // API call failed...
     })
-    .finally(function() {
+    .finally(function () {
       //console.log(billbeeStocks);
       console.log("ready...");
       callback(postions);
@@ -263,19 +323,19 @@ function defineShippingType(postions, stockServant, stockAmz) {
   let shippingAmz = []; // Verfügbarkeit auf Amazon: Array wird nur mit amz gepusht wenn der Artikel auf Amazon verfügbar ist wenn da Array gleicher Länge dem shippingTypes Array ist, sind alle Postionen auf Amazon verfügbar
   let shippingType = null;
 
-  postions.forEach(function(postion) {
+  postions.forEach(function (postion) {
     let sku = postion.sku,
       count = postion.count,
       amzCount = 0,
       servantCount = 0;
 
-    stockServant.forEach(function(item) {
+    stockServant.forEach(function (item) {
       if (item.sku == sku) {
         servantCount += item.stock;
       }
     });
 
-    stockAmz.forEach(function(item) {
+    stockAmz.forEach(function (item) {
       if (item.sku == sku) {
         amzCount += item.amazon;
       }
@@ -297,7 +357,7 @@ function defineShippingType(postions, stockServant, stockAmz) {
   console.log(shippingTypes);
   console.log(shippingAmz);
 
-  shippingTypes.forEach(function(type) {
+  shippingTypes.forEach(function (type) {
     if (shippingType == null && shippingType != `outOfStock`) {
       shippingType = type;
     } else if (shippingType != null && shippingType == type) {
@@ -341,7 +401,7 @@ function getShippingTag(orderID, callback) {
           let postions = data;
           console.log(
             `ShippingType:` +
-              defineShippingType(postions, stockServant, stockAmz)
+            defineShippingType(postions, stockServant, stockAmz)
           );
           callback(defineShippingType(postions, stockServant, stockAmz));
         });
@@ -379,7 +439,7 @@ function setShippingTag(orderID, shippingTag) {
       body: bodyTag,
       json: true
     },
-    function(error, response, body) {
+    function (error, response, body) {
       if (!error && response.statusCode == 200) {
         console.log(body);
       }
@@ -406,10 +466,10 @@ function sendInfoMail(mailAdress, orderID) {
   };
 
   rp(options)
-    .then(function(response) {
+    .then(function (response) {
       let data = JSON.parse(response);
       let items = data.Data.OrderItems;
-      items.forEach(function(postion) {
+      items.forEach(function (postion) {
         postions.push({
           count: postion.Quantity,
           sku: postion.Product.SKU
@@ -429,13 +489,13 @@ function sendInfoMail(mailAdress, orderID) {
         Country: data.Data.ShippingAddress.Country
       };
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // API call failed...
     })
-    .finally(function() {
+    .finally(function () {
       //console.log(billbeeStocks);
       let postionsFormatted = [];
-      postions.forEach(function(p) {
+      postions.forEach(function (p) {
         postionsFormatted.push(`${p.count}x ${p.sku}\n`);
       });
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
