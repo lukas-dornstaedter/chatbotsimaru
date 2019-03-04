@@ -140,7 +140,7 @@ router.get("/neworder", function (req, res) {
   });
 });
 
-router.get("/avocado", function (req, res) {
+router.get("/avocado.csv", function (req, res) {
 
 
   let startDate = new Date();
