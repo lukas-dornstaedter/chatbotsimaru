@@ -153,7 +153,7 @@ router.get("/avocado.csv", function (req, res) {
 
 
 
-  getAvocadoOrderData(20, startDate, endDate, (output) => {
+  getAvocadoOrderData(50, startDate, endDate, (output) => {
     res.csv(output, true);
   });
 });
